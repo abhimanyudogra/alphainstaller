@@ -16,9 +16,9 @@ def authorize():
         sys.exit()
         
         
-def getClient(repo_type, source, target):
+'''def getClient(repo_type, source, target):
     if repo_type == "svn":
-        return RepositoryInteraction.SVNCheckout(source, target)   
+        return RepositoryInteraction.SVNCheckout(source, target)   '''
 
     
     
@@ -29,7 +29,8 @@ def ignite(app_name, version):
     
     #repository_checkout(app_data["repo_location"], config_data["temp_folder_address"])
     
-    CheckoutClient = getClient(app_data["repo_type"], app_data["repo_location"], app_data["temp_folder_address"])
+    CheckoutClient = RepositoryInteraction.CheckoutFactory(app_data["repo_type"], app_data["repo_location"], app_data["temp_folder_address"])
+    
     CheckoutClient.checkout_code()
     
 

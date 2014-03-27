@@ -16,14 +16,61 @@ class XMLParser():
         pass
     
 class ParentXMLParser(XMLParser):
-    pass
-class ConfigXMLParser():
-    pass
-class AppXMLParser():
-    pass
+    def __init__(self, app_name, version, root):
+        XMLParser.__init__(self)
+        self.app_name = app_name
+        self.version = version
+        self.root = root
     
+class ParentXML_v_0_0(ParentXMLParser):
+    def __init__(self, app_name, version, root):
+        ParentXMLParser.__init__(app_name,version)
+        
+    def parse(self):
+        print "Parsing %s."%(PATH_PARENT_XML)
+        app_data = {}
+        target_machines = []
+        config_xml_address = ""
+        app_xml_address = ""
+        
+        for data in root:
+            if data.tag == "app":
+                if data.attrib["name"] == app_name:                 
+                    for version in data:                    
+                        if version.attrib["tag"] == version_no:                    
+                            for info in version:
+                                if info.tag == "target":                                
+                                    target_machines.append(info.attrib["ip"])                            
+                                elif info.tag == "%s_v%s_cfg" %(app_name, version_no):                                
+                                    config_xml_address = info.attrib["address"]
+                                elif info.tag == "%s_v%s" %(app_name, version_no):
+                                    app_xml_address = info.attrib["address"]
+            if data.tag == "temp_folder":
+                app_data["temp_folder_address"] = data.attrib["address"]
+                                    
+        repo_type, repo_location = appXMLparser(app_xml_address)
+        
+        app_data["name"] = app_name
+        app_data["version"] = version_no
+        app_data["repo_type"] = repo_type
+        app_data["repo_location"] = repo_location
+        
+        return app_data
+        
+        
+        
+        
+        
+class ConfigXMLParser(XMLParser):
+    pass
+class AppXMLParser(XMLParser):
+    pass
+
+
 def XMLDataExtracter(app_name, version):
-    parser = XMLParser(app_name, version)
+    tree = ET.parse(PATH_PARENT_XML)
+    root = tree.getroot()    
+    
     
 
 
