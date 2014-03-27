@@ -1,0 +1,37 @@
+id: 0-2.0.r2/0
+type: dir
+count: 0
+cpath: /lulz
+copyroot: 0 /
+
+PLAIN
+K 8
+branches
+V 14
+dir 2-1.0.r1/0
+K 4
+lulz
+V 14
+dir 0-2.0.r2/0
+K 4
+tags
+V 15
+dir 3-1.0.r1/66
+K 5
+trunk
+V 16
+dir 0-1.0.r1/129
+END
+ENDREP
+id: 0.0.r2/203
+type: dir
+pred: 0.0.r1/306
+count: 2
+text: 2 62 128 128 9a0a104f9ac7ffdeb06b822bd9f1119d
+cpath: /
+copyroot: 0 /
+
+_0.0.t1-1 add-dir false false /lulz
+
+
+203 330

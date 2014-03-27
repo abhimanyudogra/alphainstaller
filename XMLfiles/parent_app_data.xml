@@ -1,0 +1,49 @@
+<appdata version="0.0">
+  <app name="app1">
+    <version tag="1.01">
+      <target ip="1.2.3.4"/>
+      <target ip="2.3.4.5"/>
+      <target ip="3.4.5.6"/>
+      <app1_v1.01_cfg address="/home/Abhimanyu/WS/alphainstaller/XMLfiles/app1/app1_v1.01"/>
+      <app1_v1.01 address="/home/Abhimanyu/WS/alphainstaller/XMLfiles/app1/app1_v1.01"/>
+    </version>
+    <version tag="1.50">
+      <target ip="168.2.3.4"/>
+      <target ip="2.3.4.54"/>
+      <target ip="3.4.45.6"/>
+      <app1_v1.50_cfg address="/home/Abhimanyu/WS/alphainstaller/XMLfiles/app1/app1_v1.50"/>
+      <app1_v1.50 address="/home/Abhimanyu/WS/alphainstaller/XMLfiles/app1/app1_v1.50"/>
+    </version>
+    <version tag="2.00">
+      <target ip="134.2.3.4"/>
+      <target ip="21.3.3.5"/>
+      <target ip="3.42.5.6"/>
+      <app1_v2.00_cfg address="/home/Abhimanyu/WS/alphainstaller/XMLfiles/app1/app1_v2.00"/>
+      <app1_v2.00 address="/home/Abhimanyu/WS/alphainstaller/XMLfiles/app1/app1_v2.00"/>
+    </version>
+  </app> 
+  <app name="app2">
+    <version tag="4.5">
+      <target ip="1.211.3.64"/>
+      <target ip="25.3.4.5"/>     
+      <app2_v4.5_cfg address="/home/Abhimanyu/WS/alphainstaller/XMLfiles/app2/app2_v4.5/app2_v4.5_cfg.xml"/>
+      <app2_v4.5 address="/home/Abhimanyu/WS/alphainstaller/XMLfiles/app2/app2_v4.5/app2_v4.5.xml"/>
+    </version>
+    <version tag="4.7">
+      <target ip="1.2.34.4"/>
+      <target ip="2.33.4.5"/>     
+      <app2_v4.7_cfg address="/home/Abhimanyu/WS/alphainstaller/XMLfiles/app2/app2_v4.7"/>
+      <app2_v4.7 address="/home/Abhimanyu/WS/alphainstaller/XMLfiles/app2/app2_v4.7"/>
+    </version>
+  </app>
+  <app name="app3">
+    <version tag="11.1">
+      <target ip="1.2.31.4"/>
+      <target ip="213.3.4.5"/>
+      <target ip="3.214.5.6"/>
+      <app3_v11.1_cfg address="/home/Abhimanyu/WS/alphainstaller/XMLfiles/app3/app3_v11.1"/>
+      <app3_v11.1 address="/home/Abhimanyu/WS/alphainstaller/XMLfiles/app3/app3_v11.1"/>
+    </version>
+  </app>
+  <temp_folder address="/home/Abhimanyu/WS/alphainstaller/temp/" />  
+</appdata>

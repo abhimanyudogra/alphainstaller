@@ -1,0 +1,50 @@
+id: 0-1.0-6.r6/0
+type: dir
+pred: 0-1.0.r5/560
+count: 2
+text: 5 495 52 52 f0529722d91091f7a4712fe666ae20e5
+cpath: /branches/app2_v4.5
+copyfrom: 5 /trunk
+
+PLAIN
+K 9
+app2_v4.5
+V 16
+dir 0-1.0-6.r6/0
+END
+ENDREP
+id: 2-1.0.r6/206
+type: dir
+pred: 2-1.0.r1/0
+count: 1
+text: 6 153 40 40 0cbbff61859c53f10f35e0458edd3eee
+cpath: /branches
+copyroot: 0 /
+
+PLAIN
+K 8
+branches
+V 16
+dir 2-1.0.r6/206
+K 4
+tags
+V 15
+dir 3-1.0.r1/66
+K 5
+trunk
+V 16
+dir 0-1.0.r5/560
+END
+ENDREP
+id: 0.0.r6/456
+type: dir
+pred: 0.0.r5/807
+count: 6
+text: 6 342 101 101 336de40ef5f2efcc3e755f4eface0625
+cpath: /
+copyroot: 0 /
+
+0-1._0.t5-5 add-dir false false /branches/app2_v4.5
+5 /trunk
+
+456 584
