@@ -3,7 +3,7 @@ Created on 17-Mar-2014
 
 @author: Abhimanyu
 '''
-import os
+
 import xml.etree.ElementTree as ET
 import ParserDepot
 
