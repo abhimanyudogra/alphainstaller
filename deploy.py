@@ -6,7 +6,7 @@ Created on 11-Mar-2014
 
 import sys
 import authorization
-import XMLparser
+import XMLInfoExtracter
 import RepositoryInteraction
 
 def authorize():
@@ -15,23 +15,19 @@ def authorize():
     else:
         sys.exit()
         
-        
-'''def getClient(repo_type, source, target):
-    if repo_type == "svn":
-        return RepositoryInteraction.SVNCheckout(source, target)   '''
 
     
     
 def ignite(app_name, version):
     authorize()
-    print "Gathering information about %s." % (app_name)
-    app_data  = XMLparser.parse(app_name, version)
+    print "Gathering information about %s version %s." % (app_name, version)
+    app_data = XMLInfoExtracter.get_info(app_name, version)    
     
     #repository_checkout(app_data["repo_location"], config_data["temp_folder_address"])
     
-    CheckoutClient = RepositoryInteraction.CheckoutFactory(app_data["repo_type"], app_data["repo_location"], app_data["temp_folder_address"])
-    
-    CheckoutClient.checkout_code()
+    CheckoutObj = RepositoryInteraction.CheckoutFactory(app_data["app_xml_data"]["repo_type"], app_data["app_xml_data"]["repo_location"], app_data["parent_xml_data"]["temp_folder_address"])
+    print "Checking out data from repository."
+    CheckoutObj.checkout_code(app_name)
     
 
     
