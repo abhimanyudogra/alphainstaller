@@ -7,6 +7,7 @@ Created on 27-Mar-2014
 
 import os  
 from abc import ABCMeta, abstractmethod
+from utilities import FatalError
 
 
 class CheckoutFactory(object):  
@@ -25,10 +26,10 @@ class CheckoutFactory(object):
         if self.repo_type == "svn":
             return SVNCheckout(self.source, self.target)   
 
-    def checkout_code(self, app_name):
+    def checkout_code(self):
         '''Summonds the checkout_code method of Checkout subclass.
         '''
-        return self.checkout_subclass_obj.checkout_code(app_name)       
+        return self.checkout_subclass_obj.checkout_code()       
           
 class Checkout():
     ''' Abstract base class that provides an interface for modules that define code checkout procedure based on the type 
@@ -49,14 +50,15 @@ class SVNCheckout(Checkout):
     def __init__(self, source, target):
         Checkout.__init__(self, source, target)
         
-    def checkout_code(self, app_name):
+    def checkout_code(self):
         ''' Creates a subfolder in Temp dir, named after the application being checked out and checks out the code in it.
         '''
-        target_subdir = os.path.join(self.target, app_name)
-        if not os.path.exists(target_subdir):
-            os.mkdir(target_subdir)    
-        os.system("svn checkout file://%s %s"%(self.source, target_subdir))
+        os.system("svn checkout file://%s %s"%(self.source, self.target))
         
+        if not os.listdir(self.target):
+            raise FatalError("Code base could not be checked out, temp folder is empty")
+        
+            
 class GitCheckout(Checkout):
     def __init__(self, source, target):
         Checkout.__init__(self)

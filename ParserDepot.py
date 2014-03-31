@@ -39,20 +39,26 @@ class ParentXML_v_0_0(ParentXMLParser):
         for data in self.root:
             if data.tag == "applications":
                 for app in data:       #Checking the "applications" node for the required app                            
-                    if app.attrib["name"] == self.app_name:                 
+                    if app.attrib["name"] == self.app_name:               
                         for version in app:     #Checking the "version" node for the required version
                             if version.attrib["tag"] == self.version:                    
-                                for info in version:  #Extracting all information about the relevant version of the app
-                                    if info.tag == "target":                                
-                                        target_machines.append(info.attrib["ip"])   #Gathering Target addresses                         
-                                    elif info.tag == "%s_v%s_cfg" %(self.app_name, self.version):       #Location of config XML                         
-                                        parent_xml_data["config_xml_location"] = info.attrib["address"]
+                                for info in version:  #Extracting all information about the relevant version of the app  
+                                    if info.tag == "app_xml_location":        #Location of app XML
+                                        parent_xml_data["app_xml_location"] = info.text
+                                        parent_xml_data["app_xml_version"] = info.attrib["version"]                                                       
+                                    elif info.tag == "cfg_xml_location":       #Location of config XML                         
+                                        parent_xml_data["config_xml_location"] = info.text
                                         parent_xml_data["config_xml_version"] = info.attrib["version"]
-                                    elif info.tag == "%s_v%s" %(self.app_name, self.version):        #Location of app XML
-                                        parent_xml_data["app_xml_location"] = info.attrib["address"]
-                                        parent_xml_data["app_xml_version"] = info.attrib["version"]
-            if data.tag == "temp_folder":
-                parent_xml_data["temp_folder_address"] = data.attrib["address"]   # Location of the temp folder to store the release after extraction from repository
+                                    
+            if data.tag == "temp_folder_location":
+                parent_xml_data["temp_folder_location"] = data.text  # Location of the temp folder to store the release after extraction from repository
+            if data.tag == "repo_location":
+                parent_xml_data["repo_location"] = data.text
+                parent_xml_data["repo_type"] = data.attrib["type"] 
+            if data.tag == "build_file_location":
+                parent_xml_data["build_file_location"] = data.text
+                parent_xml_data["build_file_type"] = data.attrib["type"]   
+            
                 
         parent_xml_data["target_machines"] = target_machines
         return parent_xml_data

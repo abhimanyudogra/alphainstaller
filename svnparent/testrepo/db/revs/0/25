@@ -1,0 +1,81 @@
+id: 2-13.0-12.r25/0
+type: file
+pred: 2-13.0-12.r23/79
+count: 7
+text: 22 0 62 50 9c947cd4ae6be905859cc822cb40dc95 5489fea5a7f580f5b77484b4cbf94252e1317fdf 24-o/_3
+cpath: /tags/v4.5/Makefile
+copyroot: 12 /tags/v4.5
+
+PLAIN
+K 8
+Makefile
+V 20
+file 2-13.0-12.r25/0
+K 8
+app2.cpp
+V 21
+file 2-19.0-12.r19/41
+K 3
+bin
+V 21
+dir 2-24.0-12.r24/148
+K 6
+config
+V 21
+dir 4-19.0-12.r19/498
+END
+ENDREP
+id: 0-1.0-12.r25/383
+type: dir
+pred: 0-1.0-12.r24/457
+count: 15
+text: 25 214 156 156 c80b1ea4221aeb55c38708dd55e0d6c0
+cpath: /tags/v4.5
+copyroot: 12 /tags/v4.5
+
+PLAIN
+K 9
+app2_v4.5
+V 16
+dir 0-1.0-8.r8/0
+K 4
+v4.5
+V 20
+dir 0-1.0-12.r25/383
+END
+ENDREP
+id: 3-1.0.r25/632
+type: dir
+pred: 3-1.0.r24/706
+count: 15
+text: 25 544 75 75 872202f064310b24ff188f80b51e7212
+cpath: /tags
+copyroot: 0 /
+
+PLAIN
+K 8
+branches
+V 17
+dir 2-1.0.r11/278
+K 4
+tags
+V 17
+dir 3-1.0.r25/632
+K 5
+trunk
+V 16
+dir 0-1.0.r5/560
+END
+ENDREP
+id: 0.0.r25/887
+type: dir
+pred: 0.0.r24/961
+count: 25
+text: 25 770 104 104 638970f66cd295b873729fdf612d1c19
+cpath: /
+copyroot: 0 /
+
+2-13.0-12.t24-o modify-file true false /tags/v4.5/Makefile
+
+
+887 1019

@@ -1,4 +1,6 @@
 <appdata>
-  <repo_type>svn</repo_type>
-  <repo_location>/home/Abhimanyu/WS/alphainstaller/svnparent/testrepo/tags/app2_v4.5</repo_location>
+  <binary_location>bin/release/app2_v4.5</binary_location>
+  <optional_files>
+    <file>config/config.txt</file>
+  </optional_files>  
 </appdata>

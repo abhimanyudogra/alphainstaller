@@ -1,0 +1,2 @@
+all:
+	g++ -std=c++11 app2.cpp -o bin/release/app2

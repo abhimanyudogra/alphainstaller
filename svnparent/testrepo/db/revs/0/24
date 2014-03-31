@@ -1,0 +1,95 @@
+id: 4-24.0-12.r24/0
+type: dir
+count: 0
+cpath: /tags/v4.5/bin/Release
+copyroot: 12 /tags/v4.5
+
+PLAIN
+K 7
+Release
+V 19
+dir 4-24.0-12.r24/0
+END
+ENDREP
+id: 2-24.0-12.r24/148
+type: dir
+count: 0
+text: 24 94 41 41 7e3b8b6232e35ce32e4f7b4b65cf4fd8
+cpath: /tags/v4.5/bin
+copyroot: 12 /tags/v4.5
+
+PLAIN
+K 8
+Makefile
+V 21
+file 2-13.0-12.r23/79
+K 8
+app2.cpp
+V 21
+file 2-19.0-12.r19/41
+K 3
+bin
+V 21
+dir 2-24.0-12.r24/148
+K 6
+config
+V 21
+dir 4-19.0-12.r19/498
+END
+ENDREP
+id: 0-1.0-12.r24/457
+type: dir
+pred: 0-1.0-12.r23/429
+count: 14
+text: 24 287 157 157 620ce7291bc89ae2a95e85f82fa4c366
+cpath: /tags/v4.5
+copyroot: 12 /tags/v4.5
+
+PLAIN
+K 9
+app2_v4.5
+V 16
+dir 0-1.0-8.r8/0
+K 4
+v4.5
+V 20
+dir 0-1.0-12.r24/457
+END
+ENDREP
+id: 3-1.0.r24/706
+type: dir
+pred: 3-1.0.r23/678
+count: 14
+text: 24 618 75 75 6c0661d03a286bb426349a68692726f6
+cpath: /tags
+copyroot: 0 /
+
+PLAIN
+K 8
+branches
+V 17
+dir 2-1.0.r11/278
+K 4
+tags
+V 17
+dir 3-1.0.r24/706
+K 5
+trunk
+V 16
+dir 0-1.0.r5/560
+END
+ENDREP
+id: 0.0.r24/961
+type: dir
+pred: 0.0.r23/933
+count: 24
+text: 24 844 104 104 63eb459a4d67b8f89aafbff71a5830b2
+cpath: /
+copyroot: 0 /
+
+_2.0-12.t23-n add-dir false false /tags/v4.5/bin
+
+_4.0-12.t23-n add-dir false false /tags/v4.5/bin/Release
+
+
+961 1093
