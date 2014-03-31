@@ -22,6 +22,9 @@ class BuildFactory():
         
 
 class Builder(object):
+    ''' Abstract base class for all builder modules. 
+        PS: Make sure the commands refer to files inside Source folder. Present working directory is temporary folder.
+    '''
     __metaclass__ = ABCMeta
     
     @abstractmethod   
@@ -29,10 +32,12 @@ class Builder(object):
         pass
     
 class MakeBuilder(Builder):
+    ''' Module that builds the code-base using Make utility.
+    '''
     def __init__(self, target):
         Builder.__init__(self)
         self.target = target        
         
     def build(self):
         print "Invoking make-file:  %s " % self.target
-        os.system("make -f Makefile")
+        os.system("make -f Source/Makefile")

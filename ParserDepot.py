@@ -80,13 +80,15 @@ class AppXML_v_2_1(AppXMLParser):
         AppXMLParser.__init__(self, location) 
         
     def parse(self):
-        app_xml_data = {}              
+        app_xml_data = {}
+        app_xml_data["optional_files"] = []           
         tree = ET.parse(self.location)
         root = tree.getroot()
-        for xmldata in root:
-            if xmldata.tag == "repo_type":  #Extracting repository type, Eg: SVN, Git, CVS
-                app_xml_data["repo_type"] = xmldata.text
-            elif xmldata.tag == "repo_location":  #Extracting repository location
-                app_xml_data["repo_location"] = xmldata.text
-        
-        return app_xml_data 
+        for info in root:
+            if info.tag == "binary_location":
+                app_xml_data["binary_location"] = info.text
+            elif info.tag == "optional_files":
+                for _file in info:
+                    app_xml_data["optional_files"].append(_file.text)
+                    
+        return app_xml_data
