@@ -2,5 +2,5 @@
   <binary_location>bin/Release/app2</binary_location>
   <optional_files>
     <file>config/config.txt</file>
-  </optional_files>  
+  </optional_files>    
 </appdata>

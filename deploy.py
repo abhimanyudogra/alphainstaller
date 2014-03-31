@@ -5,7 +5,7 @@ Created on 11-Mar-2014
 '''
 
 import os
-import shutil
+from shutil import rmtree
 import sys
 import authorization
 import XMLInfoExtracter
@@ -23,7 +23,7 @@ def authorize():
 def checkout(app_name, version,  repo_type, repo_location, target):
     if os.path.exists(target):
         if os.listdir(target):            
-            shutil.rmtree(target)            
+            rmtree(target)            
             os.mkdir(target)            
     else: 
         os.mkdir(target)
@@ -63,7 +63,7 @@ def ignite(app_name, version):
     print "Compressing files for deployment."
     compresser(app_data["app_xml_data"]["binary_location"], app_data["app_xml_data"]["optional_files"])
 
-    
+    print "Transmitting data to target machines."
     
     
     
