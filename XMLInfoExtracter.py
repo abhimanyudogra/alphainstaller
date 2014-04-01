@@ -27,8 +27,13 @@ class XMLParserFactory():
         print "Parsing %s." % (parent_xml_data["app_xml_location"])
         app_xml_data = self.app_xml_obj.parse()
         
+        self.cfg_xml_obj = getattr(ParserDepot, "CfgXML_v_%s" % "_".join(parent_xml_data["cfg_xml_version"].split(".")))(parent_xml_data["cfg_xml_location"])
+        print "Parsing %s." % (parent_xml_data["cfg_xml_location"])
+        cfg_xml_data = self.cfg_xml_obj.parse()
+        
         data["parent_xml_data"] = parent_xml_data
         data["app_xml_data"] = app_xml_data
+        data["cfg_xml_data"] = cfg_xml_data
         
         self.data = data
     

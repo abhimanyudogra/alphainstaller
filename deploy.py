@@ -7,11 +7,13 @@ Created on 11-Mar-2014
 import os
 from shutil import rmtree
 import sys
+
 import authorization
 import XMLInfoExtracter
 import RepositoryInteraction
 import AppBuilder
 import CompressModule
+import Remote
 
 def authorize():
     if authorization.verify():
@@ -28,24 +30,27 @@ def checkout(app_name, version,  repo_type, repo_location, target):
     else: 
         os.mkdir(target)
         
-    target = os.path.join(target, "Source")
-    os.mkdir(target)
-    
+        
     version_path = os.path.join(repo_location, "v%s"%version)
     checkout_obj = RepositoryInteraction.CheckoutFactory(repo_type, version_path, target)
     checkout_obj.checkout_code()
     
 
-def builder(temp_location, builder_location, builder_type):
-    codebase_location = os.path.join(temp_location, "Source")
-    location = os.path.join(codebase_location, builder_location)
+def builder(temp_location, builder_location, builder_type):    
+    location = os.path.join(temp_location, builder_location)
     build_obj =  AppBuilder.BuildFactory(location, builder_type)
     build_obj.build()
     
 def compresser(binary_location, other_files):
-    os.mkdir("Package")
     comp_obj = CompressModule.Compress(binary_location, other_files)
     comp_obj.compress()
+    
+def remote_installer(target_machines, app_name, version):
+    for server in target_machines:
+        transmit_obj = Remote.RemoteFactory(server)
+        transmit_obj.deploy()
+        
+    
     
 
 def ignite(app_name, version):
@@ -63,8 +68,9 @@ def ignite(app_name, version):
     print "Compressing files for deployment."
     compresser(app_data["app_xml_data"]["binary_location"], app_data["app_xml_data"]["optional_files"])
 
-    print "Transmitting data to target machines."
+    print "Preparing to deploy on remote servers."
+    remote_installer(app_data["cfg_xml_data"]["target_machines"], app_name, version)
     
-    
+    print "done"
     
     

@@ -12,8 +12,8 @@ class Compress():
         self.other_files = other_files
         
     def compress(self):
-        tar = tarfile.open("Package/app.tar.gz", "w:gz")
-        tar.add(os.path.join("Source", self.bin_location))
+        tar = tarfile.open("alphainstaller.tar.gz", "w:gz")
+        tar.add(self.bin_location)
         for _file in self.other_files:
-            tar.add(os.path.join("Source", _file))
+            tar.add(_file)
         tar.close()

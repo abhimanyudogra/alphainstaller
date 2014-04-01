@@ -1,1 +1,0 @@
-/home/Abhimanyu/WS/alphainstaller/terminal.py

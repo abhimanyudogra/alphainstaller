@@ -40,4 +40,4 @@ class MakeBuilder(Builder):
         
     def build(self):
         print "Invoking make-file:  %s " % self.target
-        os.system("make -f Source/Makefile")
+        os.system("make -f Makefile")

@@ -47,8 +47,8 @@ class ParentXML_v_0_0(ParentXMLParser):
                                         parent_xml_data["app_xml_location"] = info.text
                                         parent_xml_data["app_xml_version"] = info.attrib["version"]                                                       
                                     elif info.tag == "cfg_xml_location":       #Location of config XML                         
-                                        parent_xml_data["config_xml_location"] = info.text
-                                        parent_xml_data["config_xml_version"] = info.attrib["version"]
+                                        parent_xml_data["cfg_xml_location"] = info.text
+                                        parent_xml_data["cfg_xml_version"] = info.attrib["version"]
                                     
             if data.tag == "temp_folder_location":
                 parent_xml_data["temp_folder_location"] = data.text  # Location of the temp folder to store the release after extraction from repository
@@ -92,3 +92,55 @@ class AppXML_v_2_1(AppXMLParser):
                     app_xml_data["optional_files"].append(_file.text)
                     
         return app_xml_data
+    
+class CfgXMLParser(XMLParser):
+    __metaclass__ = ABCMeta
+    
+    def __init__(self, location):
+        XMLParser.__init__(self)
+        self.location = location
+        
+        
+class CfgXML_v_0_2(CfgXMLParser):
+    def __init__(self, location):
+        CfgXMLParser.__init__(self, location)
+        
+    def parse(self):
+        cfg_xml_data = {}
+        cfg_xml_data["target_machines"] = []
+        target_machine_data = {}
+        
+        
+        target_machine_data["other_files"] = []
+        tree = ET.parse(self.location)
+        root = tree.getroot()
+        
+        for info in root:
+            if info.tag == "target_machine":                
+                target_machine_data["os"] = info.attrib["os"]
+                target_machine_data["transmit_method"] = info.attrib["transmit_method"]
+                target_machine_data["ssh_username"] = info.attrib["ssh_username"]
+                target_machine_data["ssh_password"] = info.attrib["ssh_password"]                
+                for element in info:
+                    if element.tag == "ip_address":
+                        target_machine_data["ip_address"] = element.text
+                    elif element.tag == "release_folder_path":
+                        target_machine_data["release_folder_path"] = element.text
+                    elif element.tag == "binary_file":
+                        for bin_data in element:
+                            if bin_data.tag == 'source_path':
+                                target_machine_data["bin_source_path"] = bin_data.text
+                            elif bin_data.tag == "install_path":
+                                target_machine_data["bin_install_path"] = bin_data.text
+                    elif element.tag == "other_files":
+                        for _file in element:
+                            _file_data = {}
+                            for element in _file:                                
+                                if element.tag == "source_path":
+                                    _file_data["source_path"] = element.text
+                                elif element.tag == "install_path":
+                                    _file_data["install_path"] = element.text
+                            target_machine_data["other_files"].append(_file_data)
+                            
+                cfg_xml_data["target_machines"].append(target_machine_data)        
+        return cfg_xml_data    
