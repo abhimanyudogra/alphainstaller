@@ -2,14 +2,12 @@
   <target_machine os="Linux" transmit_method="SCP_paramiko" ssh_username = "Abhimanyu" ssh_password = "alphascript" >
     <ip_address>10.164.253.216</ip_address>
     <release_folder_path>/home/Abhimanyu/Release/app2/v4.5/</release_folder_path>
-    <binary_file>
-      <source_path>bin/Release/app2</source_path>
-      <install_path>/home/Abhimanyu/infra/Prod/app2</install_path>
+    <binary_file name="app2">
+      <install_path>/home/Abhimanyu/infra/Prod/</install_path>
     </binary_file>
     <other_files>
-      <file>
-	<source_path>/config/config.txt </source_path>
-	<install_path>/home/infra/Prod/config/config.txt</install_path>
+      <file name="config.txt">
+	<install_path>/home/Abhimanyu/infra/Prod/config/</install_path>
       </file>
     </other_files>
   </target_machine>

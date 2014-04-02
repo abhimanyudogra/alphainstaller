@@ -127,19 +127,17 @@ class CfgXML_v_0_2(CfgXMLParser):
                     elif element.tag == "release_folder_path":
                         target_machine_data["release_folder_path"] = element.text
                     elif element.tag == "binary_file":
+                        target_machine_data["bin_name"] = element.attrib["name"]
                         for bin_data in element:
-                            if bin_data.tag == 'source_path':
-                                target_machine_data["bin_source_path"] = bin_data.text
-                            elif bin_data.tag == "install_path":
+                            if bin_data.tag == "install_path":
                                 target_machine_data["bin_install_path"] = bin_data.text
                     elif element.tag == "other_files":
                         for _file in element:
                             _file_data = {}
-                            for element in _file:                                
-                                if element.tag == "source_path":
-                                    _file_data["source_path"] = element.text
-                                elif element.tag == "install_path":
-                                    _file_data["install_path"] = element.text
+                            _file_data["file_name"] = _file.attrib["name"]
+                            for child in _file:                     
+                                if child.tag == "install_path":
+                                    _file_data["install_path"] = child.text
                             target_machine_data["other_files"].append(_file_data)
                             
                 cfg_xml_data["target_machines"].append(target_machine_data)        

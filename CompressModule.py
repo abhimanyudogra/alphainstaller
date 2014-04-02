@@ -4,7 +4,6 @@ Created on 31-Mar-2014
 @author: Abhimanyu
 '''
 import tarfile
-import os
 
 class Compress():
     def __init__(self, bin_location, other_files ):
@@ -13,7 +12,7 @@ class Compress():
         
     def compress(self):
         tar = tarfile.open("alphainstaller.tar.gz", "w:gz")
-        tar.add(self.bin_location)
+        tar.add(self.bin_location, arcname="%s" %self.bin_location.split("/")[-1] )
         for _file in self.other_files:
-            tar.add(_file)
+            tar.add(_file, arcname="%s" %_file.split("/")[-1])
         tar.close()

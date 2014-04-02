@@ -11,4 +11,3 @@ class FatalError(Exception):
         Exception.__init__(self, message)
     
     
-    
