@@ -1,1 +1,9 @@
- 
+<config_data>
+  <config_file>
+    <code_base_location>config/config.txt</config_base_location>
+    <target_folder_location>config/config.txt<target_folder_location>
+  </config_file>
+  <config_file>
+    <code_base_location>config/config2.txt</config_base_location>
+    <target_folder_location>config2.txt<target_folder_location>
+</config_data>

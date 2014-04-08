@@ -1,0 +1,8 @@
+<configuration>
+  <parent_xml_version>0.0</parent_xml_version>
+  <builder>Make</builder>
+  lulz
+  <repo_type>svn</repo_type>
+  <file_compression>tar.gz</file_compression>
+  <mode>shell</shell>
+</configuration>

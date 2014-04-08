@@ -1,0 +1,7 @@
+<target_machine_data>
+  <target_machine os="Linux" transmit_method="SCP_paramiko" ssh_username = "Abhimanyu" ssh_password = "alphascript" >
+    <ip_address>10.164.253.216</ip_address>
+    <release_folder_path>/home/Abhimanyu/Release/app2/v4.5/</release_folder_path>
+    <prod_folder_path>/home/Abhimanyu/infra/Prod</prod_folder_path>
+  </target_machine>
+</target_machine_data>
