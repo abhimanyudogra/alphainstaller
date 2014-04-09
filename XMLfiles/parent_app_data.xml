@@ -1,5 +1,4 @@
-<appdata version="0.0">
-  <applications>
+<appdata>
     <app name="app1">
       <version tag="1.01">	
 	<app_xml_location version="2.1">/home/Abhimanyu/WS/alphainstaller/XMLfiles/app1/app1_v1.01/app1_v1.01.xml</app_xml_location>
@@ -20,8 +19,14 @@
 	<cfg_xml_location version="0.2">/home/Abhimanyu/WS/alphainstaller/XMLfiles/app2/app2_v4.5/app2_v4.5_cfg.xml</cfg_xml_location>
       </version>
       <version tag="4.7">	   
-	<app_xml_location version="2.1">/home/Abhimanyu/WS/alphainstaller/XMLfiles/app2/app2_v4.7/app2_v4.7.xml</app_xml_location>
-	<cfg_xml_location version="0.2">/home/Abhimanyu/WS/alphainstaller/XMLfiles/app2/app2_v4.7/app2_v4.7_cfg.xml</cfg_xml_location>
+	<bin_xml_location>/home/Abhimanyu/WS/alphainstaller/XMLfiles/app2/app2_v4.7/app2_v4.7_bin.xml</bin_xml_location>
+	<bin_xml_version>0.1</bin_xml_version>
+	<cfg_xml_location >/home/Abhimanyu/WS/alphainstaller/XMLfiles/app2/app2_v4.7/app2_v4.7_cfg.xml</cfg_xml_location>
+	<cfg_xml_version>0.1</cfg_xml_version>
+	<tgt_xml_location>/home/Abhimanyu/WS/alphainstaller/XMLfiles/app2/app2_v4.7/app2_v4.7_tgt.xml</tgt_xml_location>
+	<tgt_xml_version>0.1</tgt_xml_version>
+	<scr_xml_location>/home/Abhimanyu/WS/alphainstaller/XMLfiles/app2/app2_v4.7/app2_v4.7_scr.xml</scr_xml_location>
+	<scr_xml_version>0.1</scr_xml_version>
       </version>
     </app>
     <app name="app3">
@@ -30,8 +35,7 @@
 	<cfg_xml_location version="0.2">/home/Abhimanyu/WS/alphainstaller/XMLfiles/app3/app3_v11.1/app3_v11.1_cfg.xml</cfg_xml_location>
       </version>
     </app>
-  </applications>
-  <temp_folder_location>/home/Abhimanyu/WS/alphainstaller/temp</temp_folder_location>  
+<!--  <temp_folder_location>/home/Abhimanyu/WS/alphainstaller/temp</temp_folder_location>  
   <repo_location type="svn">/home/Abhimanyu/WS/alphainstaller/svnparent/testrepo/tags/</repo_location>
-  <build_file_location type="make">Makefile</build_file_location>
+  <build_file_location type="make">Makefile</build_file_location> -->
 </appdata>

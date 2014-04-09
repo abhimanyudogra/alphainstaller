@@ -10,135 +10,130 @@ class XMLParser():
     ''' Abstract Base class for all parsing modules
     '''
     __metaclass__ = ABCMeta
+    def __init__(self, location):
+        self.location = location
     
     @abstractmethod
     def parse(self):
         pass
     
-class ParentXMLParser(XMLParser):
-    ''' Abstract Base class for all Parent XML parsing modules
-    '''
-    __metaclass__ = ABCMeta
-    def __init__(self, app_name, version, root):
-        XMLParser.__init__(self)
-        self.app_name = app_name
-        self.version = version
-        self.root = root
-        
     
-class ParentXML_v_0_0(ParentXMLParser):
+class ParentXMLParser_v_0_0(XMLParser):
     ''' Parsing module for v0.0 of Parent XML
     '''
-    def __init__(self, app_name, version, root):
-        ParentXMLParser.__init__(self, app_name, version, root)
-        
-    def parse(self):        
-        parent_xml_data = {}
-        target_machines = []        
-        
-        for data in self.root:
-            if data.tag == "applications":
-                for app in data:       #Checking the "applications" node for the required app                            
-                    if app.attrib["name"] == self.app_name:               
-                        for version in app:     #Checking the "version" node for the required version
-                            if version.attrib["tag"] == self.version:                    
-                                for info in version:  #Extracting all information about the relevant version of the app  
-                                    if info.tag == "app_xml_location":        #Location of app XML
-                                        parent_xml_data["app_xml_location"] = info.text
-                                        parent_xml_data["app_xml_version"] = info.attrib["version"]                                                       
-                                    elif info.tag == "cfg_xml_location":       #Location of config XML                         
-                                        parent_xml_data["cfg_xml_location"] = info.text
-                                        parent_xml_data["cfg_xml_version"] = info.attrib["version"]
-                                    
-            if data.tag == "temp_folder_location":
-                parent_xml_data["temp_folder_location"] = data.text  # Location of the temp folder to store the release after extraction from repository
-            if data.tag == "repo_location":
-                parent_xml_data["repo_location"] = data.text
-                parent_xml_data["repo_type"] = data.attrib["type"] 
-            if data.tag == "build_file_location":
-                parent_xml_data["build_file_location"] = data.text
-                parent_xml_data["build_file_type"] = data.attrib["type"]   
-            
-                
-        parent_xml_data["target_machines"] = target_machines
-        return parent_xml_data
-         
-     
-
-class AppXMLParser(XMLParser):
-    ''' Abstract Base Class for App XML parsing modules. 
-    '''
-    __metaclass__ = ABCMeta
     def __init__(self, location):
-        XMLParser.__init__(self)
-        self.location = location
+        XMLParser.__init__(self, location)
+        
+    def parse(self, app_name, version):                
+        parent_xml_data = {}          
+        tree = ET.parse(self.location)
+        root = tree.getroot()
+                
+        for app in root:
+            if app.attrib["name"] == app_name:               
+                for app_version in app:     #Checking the "version" node for the required version
+                    if app_version.attrib["tag"] == version:                    
+                        for info in app_version:  #Extracting all information about the relevant version of the app  
+                            parent_xml_data[info.tag] = info.text            
+            
+        return parent_xml_data
     
-class AppXML_v_2_1(AppXMLParser):
+    def get_tag(self, app_name, version, tag):        
+        tree = ET.parse(self.location)
+        root = tree.getroot()
+        
+        for app in root:
+            if app.attrib["name"] == app_name:
+                for app_version in app:
+                    if app_version.attrib["tag"] == version:
+                        for info in app_version:
+                            if info.tag == tag:
+                                return info.text        
+                    
+         
+
+    
+class BinXMLParser_v_0_1(XMLParser):
     ''' Parsing module for v2.1 of App XML.
     '''
     def __init__(self, location):
-        AppXMLParser.__init__(self, location) 
+        XMLParser.__init__(self, location) 
         
     def parse(self):
-        app_xml_data = {}
-        app_xml_data["optional_files"] = []           
+        bin_xml_data = {}          
         tree = ET.parse(self.location)
         root = tree.getroot()
-        for info in root:
-            if info.tag == "binary_location":
-                app_xml_data["binary_location"] = info.text
-            elif info.tag == "optional_files":
-                for _file in info:
-                    app_xml_data["optional_files"].append(_file.text)
+        bin_xml_data[root.tag] = [] 
+        for bin_file in root:
+            data = {}
+            for info in bin_file:
+                data[info.tag] = info.text
+            bin_xml_data[root.tag].append(data)
                     
-        return app_xml_data
+        return bin_xml_data
     
-class CfgXMLParser(XMLParser):
-    __metaclass__ = ABCMeta
-    
-    def __init__(self, location):
-        XMLParser.__init__(self)
-        self.location = location
         
-        
-class CfgXML_v_0_2(CfgXMLParser):
+class CfgXMLParser_v_0_1(XMLParser):
     def __init__(self, location):
-        CfgXMLParser.__init__(self, location)
+        XMLParser.__init__(self, location)
         
     def parse(self):
-        cfg_xml_data = {}
-        cfg_xml_data["target_machines"] = []
-        target_machine_data = {}
-        
-        
-        target_machine_data["other_files"] = []
+        cfg_xml_data = {}          
         tree = ET.parse(self.location)
         root = tree.getroot()
+        cfg_xml_data[root.tag] = [] 
+        for config_file in root:
+            data = {}
+            for info in config_file:
+                data[info.tag] = info.text
+            cfg_xml_data[root.tag].append(data)
         
-        for info in root:
-            if info.tag == "target_machine":                
-                target_machine_data["os"] = info.attrib["os"]
-                target_machine_data["transmit_method"] = info.attrib["transmit_method"]
-                target_machine_data["ssh_username"] = info.attrib["ssh_username"]
-                target_machine_data["ssh_password"] = info.attrib["ssh_password"]                
-                for element in info:
-                    if element.tag == "ip_address":
-                        target_machine_data["ip_address"] = element.text
-                    elif element.tag == "release_folder_path":
-                        target_machine_data["release_folder_path"] = element.text
-                    elif element.tag == "binary_file":
-                        target_machine_data["bin_name"] = element.attrib["name"]
-                        for bin_data in element:
-                            if bin_data.tag == "install_path":
-                                target_machine_data["bin_install_path"] = bin_data.text
-                    elif element.tag == "other_files":
-                        for _file in element:
-                            _file_data = {}
-                            _file_data["file_name"] = _file.attrib["name"]
-                            for child in _file:                     
-                                if child.tag == "install_path":
-                                    _file_data["install_path"] = child.text
-                            target_machine_data["other_files"].append(_file_data)
-                            
-                cfg_xml_data["target_machines"].append(target_machine_data)        
-        return cfg_xml_data    
+        return cfg_xml_data
+        
+        
+class TgtXMLParser_v_0_1(XMLParser):
+    def __init__(self, location):
+        XMLParser.__init__(self, location)
+        
+    def parse(self):
+        tgt_xml_data = {}           
+        tree = ET.parse(self.location)
+        root = tree.getroot()
+        tgt_xml_data[root.tag] = []
+        for target_machine in root:
+            data = {}
+            for info in target_machine:
+                data[info.tag] = info.text
+            tgt_xml_data[root.tag].append(data)
+            
+        return tgt_xml_data
+
+class ScrXMLParser_v_0_1(XMLParser):
+    def __init__(self, location):
+        XMLParser.__init__(self, location)
+        
+    def parse(self):
+        scr_xml_data = {}           
+        tree = ET.parse(self.location)
+        root = tree.getroot()
+        scr_xml_data[root.tag] = []
+        for script_file in root:
+            data = {}
+            for info in script_file:
+                data[info.tag] = info.text
+            scr_xml_data[root.tag].append(data)
+        
+        return scr_xml_data
+
+class AlphainstallerXMLParser(XMLParser):
+    def __init__(self, location):
+        XMLParser.__init__(self, location)
+        
+    def parse(self):
+        alphainstaller_xml_data = {}
+        tree = ET.parse(self.location)
+        root = tree.getroot()        
+        for data in root:
+            alphainstaller_xml_data[data.tag] = data.text
+            
+        return alphainstaller_xml_data

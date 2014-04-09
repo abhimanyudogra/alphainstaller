@@ -1,0 +1,46 @@
+PLAIN
+K 9
+app2_v4.5
+V 16
+dir 0-1.0-8.r8/0
+K 4
+v4.5
+V 20
+dir 0-1.0-12.r27/383
+END
+ENDREP
+id: 3-1.0.r29/88
+type: dir
+pred: 3-1.0.r28/268
+count: 19
+text: 29 0 75 75 c96b015e0bd6887d721edd6156a3bd18
+cpath: /tags
+copyroot: 0 /
+
+PLAIN
+K 8
+branches
+V 17
+dir 2-1.0.r11/278
+K 4
+tags
+V 16
+dir 3-1.0.r29/88
+K 5
+trunk
+V 16
+dir 0-1.0.r5/560
+END
+ENDREP
+id: 0.0.r29/339
+type: dir
+pred: 0.0.r28/525
+count: 29
+text: 29 223 103 103 de15102b9596027f22d8b4ea1ff393f5
+cpath: /
+copyroot: 0 /
+
+0-1.0-28.r28/0 delete-dir false false /tags/v4.7
+
+
+339 471

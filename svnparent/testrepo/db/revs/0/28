@@ -1,0 +1,58 @@
+id: 0-1.0-28.r28/0
+type: dir
+pred: 0-1.0.r5/560
+count: 2
+text: 5 495 52 52 f0529722d91091f7a4712fe666ae20e5
+cpath: /tags/v4.7
+copyfrom: 27 /trunk
+
+PLAIN
+K 9
+app2_v4.5
+V 16
+dir 0-1.0-8.r8/0
+K 4
+v4.5
+V 20
+dir 0-1.0-12.r27/383
+K 4
+v4.7
+V 18
+dir 0-1.0-28.r28/0
+END
+ENDREP
+id: 3-1.0.r28/268
+type: dir
+pred: 3-1.0.r27/632
+count: 18
+text: 28 147 108 108 72ebf0807a693dbcf43fbb3e64d7a1b3
+cpath: /tags
+copyroot: 0 /
+
+PLAIN
+K 8
+branches
+V 17
+dir 2-1.0.r11/278
+K 4
+tags
+V 17
+dir 3-1.0.r28/268
+K 5
+trunk
+V 16
+dir 0-1.0.r5/560
+END
+ENDREP
+id: 0.0.r28/525
+type: dir
+pred: 0.0.r27/887
+count: 28
+text: 28 408 104 104 4da7fdc8bfe2eb73b129b91e236bbc38
+cpath: /
+copyroot: 0 /
+
+0-1._0.t27-r add-dir false false /tags/v4.7
+27 /trunk
+
+525 657
