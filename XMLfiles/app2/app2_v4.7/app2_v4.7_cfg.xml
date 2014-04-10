@@ -1,10 +1,10 @@
 <config_data>
   <config_file>
     <code_base_location>config/</code_base_location>
-    <target_folder_location>config/</target_folder_location>
+    <target_location>config/</target_location>
   </config_file>
   <config_file>
     <code_base_location>config2.txt</code_base_location>
-    <target_folder_location>config/config2.txt</target_folder_location>
+    <target_location>config/config2.txt</target_location>
   </config_file>
 </config_data>

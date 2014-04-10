@@ -1,10 +1,10 @@
 <bin_data>
   <binary>
     <code_base_location>bin/Release/app2</code_base_location>
-    <target_folder_location>app2</target_folder_location>    
+    <target_location>app2</target_location>    
   </binary>
   <binary>
     <code_base_location>bin/debug/app2support</code_base_location>
-    <target_folder_location>support/app2support</target_folder_location>
+    <target_location>support/app2support</target_location>
   </binary>  
 </bin_data>

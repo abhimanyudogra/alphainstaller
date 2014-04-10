@@ -55,16 +55,15 @@ def compresser(file_compression, parent_xml_data):
     comp_obj = Compresser.CompresserFactory(file_compression)
     comp_obj.compress(parent_xml_data)
     
-def remote_installer(target_machines, app_name, version):
-    for server in target_machines:
-        transmit_obj = Remote.RemoteFactory(server)
-        transmit_obj.deploy() 
+def remote_installer(parent_xml_data):    
+    transmit_obj = Remote.RemoteFactory(parent_xml_data)
+    transmit_obj.deploy() 
         
     
     
 
 def ignite(app_name, code_base_version):
-    #authorize()
+    authorize()
     print "Gathering alphainstaller settings."
     settings = gather_settings()
     
@@ -81,30 +80,9 @@ def ignite(app_name, code_base_version):
     print "Compressing files for deployment."
     compresser(settings["file_compression"], parent_xml_data)
     
-
-    
-    print settings
-    print parent_xml_data
-    
-    
-    
-    '''
-    parent_xml_data = XMLInfoExtracter.get_info(app_name, version)    
-    
-    
-    print "Checking out data from repository."
-    checkout(app_name, version, app_data["parent_xml_data"]["repo_type"], app_data["parent_xml_data"]["repo_location"], app_data["parent_xml_data"]["temp_folder_location"])
-    
-    print "Building code base."
-    os.chdir(app_data["parent_xml_data"]["temp_folder_location"])
-    builder(app_data["parent_xml_data"]["temp_folder_location"], app_data["parent_xml_data"]["build_file_location"], app_data["parent_xml_data"]["build_file_type"])
-    
-    print "Compressing files for deployment."
-    compresser(app_data["app_xml_data"]["binary_location"], app_data["app_xml_data"]["optional_files"])
-
     print "Preparing to deploy on remote servers."
-    remote_installer(app_data["cfg_xml_data"]["target_machines"], app_name, version)
+    remote_installer(parent_xml_data)
     
-    print "done"'''
+    print "done"
     
     

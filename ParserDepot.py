@@ -49,9 +49,6 @@ class ParentXMLParser_v_0_0(XMLParser):
                         for info in app_version:
                             if info.tag == tag:
                                 return info.text        
-                    
-         
-
     
 class BinXMLParser_v_0_1(XMLParser):
     ''' Parsing module for v2.1 of App XML.
