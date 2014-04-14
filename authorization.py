@@ -13,7 +13,7 @@ def verify():
         username = raw_input()        
         password = getpass()
         if(pam.authenticate(username, password)):
-            return True
+            return username
         else:
             print "Invalid username or password. Do you want to try again? (Press 'y' to continue...): "
             tryagain = raw_input()

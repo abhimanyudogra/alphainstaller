@@ -19,11 +19,14 @@ class RemoteFactory(object):
         if self.target_machine_data["transmit_method"] == "SCP_paramiko":
             return SCP_paramiko(self.target_machine_data)
         
-    def deploy(self):
+    def deploy(self, log_obj):
         for server in self.target_machine_data["target_machines"]:
+            log_obj.add_log("Deploying app on server : %s" % server["ip_address"])
             if server["transmission_method"] == "SCP_paramiko":
                 self.remote_obj = SCP_paramiko(self.parent_xml_data, server)                
-                self.remote_obj.deploy()
+                self.remote_obj.deploy(log_obj)
+            log_obj.mark_checkpoint("App deployed on server : %s" %server["ip_address"])
+            
         
         
 
@@ -43,10 +46,6 @@ class SCP_paramiko(object):
         if err:
             print err
             
-    def parent_dir(self, path):
-        return path.split("/")
-        
-      
     def linker(self, ssh):
         
         for _binary in self.binary_files["bin_data"]:
@@ -81,8 +80,8 @@ class SCP_paramiko(object):
         
         
         
-    def deploy(self):
-        print "Setting up SSH connection with %s" % self.server_data["ip_address"]
+    def deploy(self, log_obj):
+        log_obj.add_log("Setting up SSH connection with %s" % self.server_data["ip_address"])
         ssh = paramiko.SSHClient()
         ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         ssh.connect(self.server_data["ip_address"], username=self.server_data["ssh_username"], password=self.server_data["ssh_password"])
@@ -90,14 +89,17 @@ class SCP_paramiko(object):
         type(stdin)
         self.display_activity(stdout, stderr)
         
-        print "Setting up SCP client."
+        log_obj.add_log("Setting up SCP client.")
         scp_obj = scp.SCPClient(ssh.get_transport())
         
-        print "Sending files."
+        log_obj.add_log("Sending files.")
         scp_obj.put("alphainstaller.tar.gz", self.server_data["release_folder_location"])
+        log_obj.mark_checkpoint("Package successfully uploaded.")
         
-        print "Extracting 'alphainstaller.tar.gz'"
+        log_obj.add_log("Extracting 'alphainstaller.tar.gz'")
         self.extracter(ssh)
+        log_obj.mark_checkpoint("Package successfully extracted.")
         
-        print "Establishing links to install application."
+        log_obj.add_log("Establishing links to install application.")
         self.linker(ssh)
+        log_obj.mark_checkpoint("Links successfully established.")

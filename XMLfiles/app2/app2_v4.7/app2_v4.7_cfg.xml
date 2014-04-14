@@ -1,7 +1,7 @@
 <config_data>
   <config_file>
-    <code_base_location>config/</code_base_location>
-    <target_location>config/</target_location>
+    <code_base_location>config/config.txt</code_base_location>
+    <target_location>config/config.txt</target_location>
   </config_file>
   <config_file>
     <code_base_location>config2.txt</code_base_location>

@@ -1,0 +1,25 @@
+[ACTION_BEGIN]>> deploy : Abhimanyu : 2014-04-14T18:26:56.722363
+[CHECKPOINT::1]>> Logged in
+	SUBPROCESS>> Gathering alphainstaller settings.
+[CHECKPOINT::2]>> Gathered alphainstaller settings
+	SUBPROCESS>> Gathering information about app2 version 4.7.
+[CHECKPOINT::3]>> Gathered app information
+	SUBPROCESS>> Checking out data from repository.
+[CHECKPOINT::4]>> Checked out repository
+	SUBPROCESS>> Building code base.
+[CHECKPOINT::5]>> Codebase built
+	SUBPROCESS>> Compressing files for deployment.
+[CHECKPOINT::6]>> Files compressed
+	SUBPROCESS>> Preparing to deploy on remote servers.
+	SUBPROCESS>> Deploying app on server : 10.164.253.216
+	SUBPROCESS>> Setting up SSH connection with 10.164.253.216
+	SUBPROCESS>> Setting up SCP client.
+	SUBPROCESS>> Sending files.
+[CHECKPOINT::7]>> Package successfully uploaded.
+	SUBPROCESS>> Extracting 'alphainstaller.tar.gz'
+[CHECKPOINT::8]>> Package successfully extracted.
+	SUBPROCESS>> Establishing links to install application.
+[CHECKPOINT::9]>> Links successfully established.
+[CHECKPOINT::10]>> App deployed on server : 10.164.253.216
+[CHECKPOINT::11]>> App deployed
+[ACTION_COMPLETE]>> 2014-04-14T18:26:59.043307
