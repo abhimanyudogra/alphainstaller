@@ -26,11 +26,6 @@ class RemoteFactory(object):
                 self.remote_obj = SCP_paramiko(self.parent_xml_data, server)                
                 self.remote_obj.deploy(log_obj, start_from_cp)
             log_obj.mark_checkpoint("App deployed on server : %s" %server["ip_address"])
-            
-            
-        
-        
-
     
 class SCP_paramiko(object):
     def __init__(self, parent_xml_data, server_data):
@@ -85,9 +80,7 @@ class SCP_paramiko(object):
         self.display_activity(stdout, stderr)        
         return ssh
         
-        
-    def deploy(self, log_obj, start_from_cp):
-        
+    def deploy(self, log_obj, start_from_cp):        
         log_obj.add_log("Setting up SSH connection with %s" % self.server_data["ip_address"])
         ssh = self.SSH_connector()            
         

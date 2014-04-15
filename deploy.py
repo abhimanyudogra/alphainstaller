@@ -20,7 +20,6 @@ import utilities
 
 PATH_SETTINGS_XML = "XMLfiles/alphainstaller_settings.xml"
 
-
 def authorize():
     username = authorization.verify()
     if username:
@@ -72,9 +71,6 @@ def remote_installer(log_obj, parent_xml_data, start_from_cp):
     transmit_obj = Remote.RemoteFactory(parent_xml_data)
     transmit_obj.deploy(log_obj, start_from_cp) 
         
-    
-    
-
 def ignite(app_name, code_base_version):
     username = authorize()    
     log_obj = Logger(app_name, code_base_version, "deploy", username)  
@@ -85,7 +81,6 @@ def ignite(app_name, code_base_version):
     
     log_obj.add_log("Gathering information about %s version %s." % (app_name, code_base_version))    
     parent_xml_data = gather_app_data(app_name, code_base_version, settings["parent_xml_location"], settings["parent_xml_version"])
-    
     
     if (start_from_cp <= log_obj.checkpoint_id):    
         log_obj.add_log("Checking out data from repository.")
@@ -109,7 +104,6 @@ def ignite(app_name, code_base_version):
         log_obj.mark_checkpoint("Files compressed")
     else:
         log_obj.skip_checkpoint()
-    
     
     log_obj.add_log("Preparing to deploy on remote servers.")
     remote_installer(log_obj, parent_xml_data, start_from_cp)
