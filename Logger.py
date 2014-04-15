@@ -29,10 +29,10 @@ class Logger():
         print "[MARKING CHECKPOINT]\n"
         self.file_obj.write("[CHECKPOINT::%d]>> %s\n" %(self.checkpoint_id, desc))
         
-    def inc_cp(self):
-        self.checkpoint+=1
-        
-        
+    def skip_checkpoint(self):
+        self.checkpoint_id+=1
+        print "Skipping checkpoint %d" %self.checkpoint_id
+               
     def action_complete(self):
         print "Action completed successfully."
         self.file_obj.write("[ACTION_COMPLETE]>> %s\n" %datetime.now().isoformat())

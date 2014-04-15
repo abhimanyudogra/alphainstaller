@@ -4,11 +4,20 @@ Created on 18-Feb-2014
 @author: Abhimanyu
 '''
 
+import re
 
-f = open("Logs/app2/v4.7/log", "a+")
+i = 1
+f = open("Logs/app2/v4.7/log", "r").readlines()
 
-if not f.read():
-    print "not empty"
+actstrt_re = re.compile('^\[ACTION_BEGIN\]')
+actcomp_re = re.compile('^\[ACTION_COMPLETE\]')
+chkpt_re = re.compile('^\[CHECKPOINT::(\d+)\]')
+
+
+
+else:
+   
+
+        
     
-f.write("lolx")
-
+    
