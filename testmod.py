@@ -15,8 +15,8 @@ chkpt_re = re.compile('^\[CHECKPOINT::(\d+)\]')
 
 
 
-else:
-   
+
+
 
         
     
