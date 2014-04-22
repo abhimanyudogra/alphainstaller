@@ -3,8 +3,8 @@ Created on 31-Mar-2014
 
 @author: Abhimanyu
 '''
-import tarfile
 
+import tarfile
 import XMLInfoExtracter
 
 
@@ -28,8 +28,9 @@ class Compresser_targz():
     Adds all the app files to tar.gz archive.
     '''
     def compress(self, binary_files, config_files, scr_files):
-        tar = tarfile.open("alphainstaller.tar.gz", "w:gz")
-
+        
+        tar = tarfile.open("alphainstaller.tar.gz", "w:gz")             
+        
         for _binary in binary_files["bin_data"]:
             tar.add(_binary["code_base_location"])
 
@@ -39,6 +40,4 @@ class Compresser_targz():
         for scr in scr_files["script_data"]:
             tar.add(scr["code_base_location"])
 
-        tar.close()
-
-        
+        tar.close()        

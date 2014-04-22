@@ -8,10 +8,11 @@ import paramiko
 import scp
 import os
 import socket
-import sys
 
 import XMLInfoExtracter
+from ParserDepot import AlphainstallerXMLParser
 import utilities
+PATH_SETTINGS_XML = "XMLfiles/alphainstaller_settings.xml"
 
 
 class RemoteFactory(object):
@@ -53,13 +54,14 @@ class RemoteFactory(object):
         Calls the deploy method for every target machine.
         '''
         _queue = self.build_server_queue(server_resume_data)
+        
         while _queue:
             server_and_checkpoint = _queue.pop(0)
             server = server_and_checkpoint[0]
             checkpoint = server_and_checkpoint[1]
             lock_obj = utilities.Lock(server["ip_address"], app_name)
             if lock_obj.check_lock():
-                question = "The app is currently being deployed/modified on target server %s. Do you want to add this server to the end of queue?"
+                question = "The app is currently being deployed/modified on target server %s. Do you want to add this server to the end of queue?" % server["ip_address"]
                 if utilities.yes_or_no(question, "y"):
                     _queue.append(server_and_checkpoint)
             else:           
@@ -70,8 +72,9 @@ class RemoteFactory(object):
                         self.remote_obj = SCP_paramiko(self.parent_xml_data, server)
                         self.remote_obj.deploy(log_obj, checkpoint)
                     except socket.error:
-                        question = "A network problem has occurred while remotely accessing server %s. Please make sure the \
-                        system is connected to the server. Do you wish to continue with remaining servers?" % server["ip_address"]
+                        lock_obj.unlock() 
+                        question = '''A network problem has occurred while remotely accessing server %s. Please make sure the 
+                        system is connected to the server. Do you wish to continue with remaining servers?''' % server["ip_address"]
                         if not utilities.yes_or_no(question, 'n'):
                             raise utilities.FatalError("User chose to terminate action after encountering an error while deplying on remote machines.")
                 log_obj.mark_server_checkpoint(server["ip_address"])
@@ -148,7 +151,25 @@ class SCP_paramiko(object):
         self.display_activity(stdout, stderr)
         return ssh
     
-
+    def get_source(self):
+        parse_obj = AlphainstallerXMLParser(PATH_SETTINGS_XML)
+        data = parse_obj.get_values(("temp_folder_location"))
+        return os.path.join(data["temp_folder_location"], "alphainstaller.tar.gz")
+    
+    def diff(self, ssh, main_path):
+        stdin, stdout, stderr = ssh.exec_command("find %s -type l -print0 | sort -z | xargs -0 sha1sum" % main_path)
+        type(stdin)
+        state = {}     
+        hashes = stdout.readlines()
+        print hashes                
+        for _hash in hashes:
+            hash_file_pair = _hash.split("  ")
+            print hash_file_pair
+            state[hash_file_pair[1]] = hash_file_pair[0]
+            
+        print state
+        
+        
     def deploy(self, log_obj, start_from_cp):
         '''
         Driver module. Calls all sub-modules to transmit package, extract it and establish final connections.
@@ -159,10 +180,12 @@ class SCP_paramiko(object):
 
         log_obj.add_log("Setting up SCP client.")
         scp_obj = scp.SCPClient(ssh.get_transport())
+        
+        package_source_path = self.get_source()
 
         if (start_from_cp <= log_obj.checkpoint_id):
             log_obj.add_log("Sending files.")
-            scp_obj.put("alphainstaller.tar.gz", self.server_data["release_folder_location"])
+            scp_obj.put(package_source_path, self.server_data["release_folder_location"])
             log_obj.mark_remote_checkpoint("Package successfully uploaded.", ip_address)
         else:
             log_obj.skip_checkpoint()
@@ -180,5 +203,6 @@ class SCP_paramiko(object):
             log_obj.mark_remote_checkpoint("Links successfully established.", ip_address)
         else:
             log_obj.skip_checkpoint()
-
+        
+        self.diff(ssh, self.server_data["prod_folder_location"])
         ssh.close()

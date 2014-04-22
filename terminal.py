@@ -15,6 +15,8 @@ import update
 import rollback
 import utilities
 
+PATH_SETTINGS_XML = "XMLfiles/alphainstaller_settings.xml"
+
 arguments = argparse.ArgumentParser(description="AlphaInstaller")
 arguments.add_argument("action")
 arguments.add_argument("app_name")

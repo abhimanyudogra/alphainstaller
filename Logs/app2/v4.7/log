@@ -1,42 +1,4 @@
-[ACTION_BEGIN]>> deploy : Abhimanyu : 2014-04-22T13:36:14.311722
-    SUBPROCESS>> Gathering alphainstaller settings.
-    SUBPROCESS>> Gathering information about app2 version 4.7.
-    SUBPROCESS>> Checking out data from repository.
-[LOCAL CHECKPOINT::1]>> Checked out repository
-    SUBPROCESS>> Building code base.
-[LOCAL CHECKPOINT::2]>> Codebase built
-    SUBPROCESS>> Compressing files for deployment.
-[LOCAL CHECKPOINT::3]>> Files compressed
-[LOCAL PROCEDURES COMPLETE]
-    SUBPROCESS>> Deploying app on server : 10.164.253.216
-    SUBPROCESS>> Setting up SSH connection with 10.164.253.216
-    SUBPROCESS>> Setting up SCP client.
-    SUBPROCESS>> Sending files.
-[REMOTE CHECKPOINT::10.164.253.216::1]>> Package successfully uploaded.
-    SUBPROCESS>> Extracting 'alphainstaller.tar.gz'
-
-
-[ACTION_BEGIN]>> deploy : Abhimanyu : 2014-04-22T14:44:53.657215
-	SUBPROCESS>> Gathering alphainstaller settings.
-	SUBPROCESS>> Gathering information about app2 version 4.7.
-[SKIP CHECKPOINT::1]
-[SKIP CHECKPOINT::2]
-[SKIP CHECKPOINT::3]
-[LOCAL PROCEDURES COMPLETE]
-	SUBPROCESS>> Deploying app on server : 10.164.253.216
-	SUBPROCESS>> Setting up SSH connection with 10.164.253.216
-	SUBPROCESS>> Setting up SCP client.
-[SKIP CHECKPOINT::1]
-	SUBPROCESS>> Extracting 'alphainstaller.tar.gz'
-[REMOTE CHECKPOINT::10.164.253.216::2]>> Package successfully extracted.
-	SUBPROCESS>> Establishing links to install application.
-[REMOTE CHECKPOINT::10.164.253.216::3]>> Links successfully established.
-[SERVER CHECKPOINT::10.164.253.216]
-[ACTION_COMPLETE]>> 2014-04-22T14:45:03.391885
-
-
-
-[ACTION_BEGIN]>> deploy : Abhimanyu : 2014-04-22T14:49:11.865223
+[ACTION_BEGIN]>> deploy : Abhimanyu : 2014-04-22T17:31:14.292706
 	SUBPROCESS>> Gathering alphainstaller settings.
 	SUBPROCESS>> Gathering information about app2 version 4.7.
 	SUBPROCESS>> Checking out data from repository.
@@ -51,24 +13,60 @@
 	SUBPROCESS>> Setting up SCP client.
 	SUBPROCESS>> Sending files.
 [REMOTE CHECKPOINT::10.164.253.216::1]>> Package successfully uploaded.
+	SUBPROCESS>> Extracting 'alphainstaller.tar.gz'
+[REMOTE CHECKPOINT::10.164.253.216::2]>> Package successfully extracted.
+	SUBPROCESS>> Establishing links to install application.
+[REMOTE CHECKPOINT::10.164.253.216::3]>> Links successfully established.
+[SERVER CHECKPOINT::10.164.253.216]
+[ACTION_COMPLETE]>> 2014-04-22T17:31:16.527525
 
 
 
-[ACTION_BEGIN]>> deploy : Abhimanyu : 2014-04-22T14:49:27.178358
+[ACTION_BEGIN]>> deploy : Abhimanyu : 2014-04-22T18:19:45.589321
 	SUBPROCESS>> Gathering alphainstaller settings.
 	SUBPROCESS>> Gathering information about app2 version 4.7.
-[SKIP CHECKPOINT::1]
-[SKIP CHECKPOINT::2]
-[SKIP CHECKPOINT::3]
+	SUBPROCESS>> Checking out data from repository.
+[LOCAL CHECKPOINT::1]>> Checked out repository
+	SUBPROCESS>> Building code base.
+[LOCAL CHECKPOINT::2]>> Codebase built
+	SUBPROCESS>> Compressing files for deployment.
+[LOCAL CHECKPOINT::3]>> Files compressed
 [LOCAL PROCEDURES COMPLETE]
+	SUBPROCESS>> Deploying app on server : 10.164.253.216
+	SUBPROCESS>> Setting up SSH connection with 10.164.253.216
+	SUBPROCESS>> Setting up SCP client.
+	SUBPROCESS>> Sending files.
+[REMOTE CHECKPOINT::10.164.253.216::1]>> Package successfully uploaded.
+	SUBPROCESS>> Extracting 'alphainstaller.tar.gz'
+[REMOTE CHECKPOINT::10.164.253.216::2]>> Package successfully extracted.
+	SUBPROCESS>> Establishing links to install application.
+[REMOTE CHECKPOINT::10.164.253.216::3]>> Links successfully established.
 
 
-[ACTION_BEGIN]>> deploy : Abhimanyu : 2014-04-22T14:53:48.423086
+
+[ACTION_BEGIN]>> deploy : Abhimanyu : 2014-04-22T18:20:06.821314
 	SUBPROCESS>> Gathering alphainstaller settings.
 	SUBPROCESS>> Gathering information about app2 version 4.7.
-[SKIP CHECKPOINT::1]
-[SKIP CHECKPOINT::2]
-[SKIP CHECKPOINT::3]
+	SUBPROCESS>> Checking out data from repository.
+[LOCAL CHECKPOINT::1]>> Checked out repository
+	SUBPROCESS>> Building code base.
+[LOCAL CHECKPOINT::2]>> Codebase built
+	SUBPROCESS>> Compressing files for deployment.
+[LOCAL CHECKPOINT::3]>> Files compressed
+[LOCAL PROCEDURES COMPLETE]
+[ACTION_COMPLETE]>> 2014-04-22T18:20:36.988401
+
+
+
+[ACTION_BEGIN]>> deploy : Abhimanyu : 2014-04-22T18:20:52.501330
+	SUBPROCESS>> Gathering alphainstaller settings.
+	SUBPROCESS>> Gathering information about app2 version 4.7.
+	SUBPROCESS>> Checking out data from repository.
+[LOCAL CHECKPOINT::1]>> Checked out repository
+	SUBPROCESS>> Building code base.
+[LOCAL CHECKPOINT::2]>> Codebase built
+	SUBPROCESS>> Compressing files for deployment.
+[LOCAL CHECKPOINT::3]>> Files compressed
 [LOCAL PROCEDURES COMPLETE]
 	SUBPROCESS>> Deploying app on server : 10.164.253.216
 	SUBPROCESS>> Setting up SSH connection with 10.164.253.216
@@ -80,4 +78,172 @@
 	SUBPROCESS>> Establishing links to install application.
 [REMOTE CHECKPOINT::10.164.253.216::3]>> Links successfully established.
 [SERVER CHECKPOINT::10.164.253.216]
-[ACTION_COMPLETE]>> 2014-04-22T14:53:50.699528
+[ACTION_COMPLETE]>> 2014-04-22T18:20:54.713797
+
+
+
+[ACTION_BEGIN]>> deploy : Abhimanyu : 2014-04-22T18:22:00.405138
+	SUBPROCESS>> Gathering alphainstaller settings.
+	SUBPROCESS>> Gathering information about app2 version 4.7.
+	SUBPROCESS>> Checking out data from repository.
+[LOCAL CHECKPOINT::1]>> Checked out repository
+	SUBPROCESS>> Building code base.
+[LOCAL CHECKPOINT::2]>> Codebase built
+	SUBPROCESS>> Compressing files for deployment.
+[LOCAL CHECKPOINT::3]>> Files compressed
+[LOCAL PROCEDURES COMPLETE]
+	SUBPROCESS>> Deploying app on server : 10.164.253.216
+	SUBPROCESS>> Setting up SSH connection with 10.164.253.216
+	SUBPROCESS>> Setting up SCP client.
+	SUBPROCESS>> Sending files.
+[REMOTE CHECKPOINT::10.164.253.216::1]>> Package successfully uploaded.
+	SUBPROCESS>> Extracting 'alphainstaller.tar.gz'
+[REMOTE CHECKPOINT::10.164.253.216::2]>> Package successfully extracted.
+	SUBPROCESS>> Establishing links to install application.
+[REMOTE CHECKPOINT::10.164.253.216::3]>> Links successfully established.
+[SERVER CHECKPOINT::10.164.253.216]
+[ACTION_COMPLETE]>> 2014-04-22T18:22:02.592694
+
+
+
+[ACTION_BEGIN]>> deploy : Abhimanyu : 2014-04-22T18:24:03.397469
+	SUBPROCESS>> Gathering alphainstaller settings.
+	SUBPROCESS>> Gathering information about app2 version 4.7.
+	SUBPROCESS>> Checking out data from repository.
+[LOCAL CHECKPOINT::1]>> Checked out repository
+	SUBPROCESS>> Building code base.
+[LOCAL CHECKPOINT::2]>> Codebase built
+	SUBPROCESS>> Compressing files for deployment.
+[LOCAL CHECKPOINT::3]>> Files compressed
+[LOCAL PROCEDURES COMPLETE]
+	SUBPROCESS>> Deploying app on server : 10.164.253.216
+	SUBPROCESS>> Setting up SSH connection with 10.164.253.216
+	SUBPROCESS>> Setting up SCP client.
+	SUBPROCESS>> Sending files.
+[REMOTE CHECKPOINT::10.164.253.216::1]>> Package successfully uploaded.
+	SUBPROCESS>> Extracting 'alphainstaller.tar.gz'
+[REMOTE CHECKPOINT::10.164.253.216::2]>> Package successfully extracted.
+	SUBPROCESS>> Establishing links to install application.
+[REMOTE CHECKPOINT::10.164.253.216::3]>> Links successfully established.
+[SERVER CHECKPOINT::10.164.253.216]
+[ACTION_COMPLETE]>> 2014-04-22T18:24:05.702667
+
+
+
+[ACTION_BEGIN]>> deploy : Abhimanyu : 2014-04-22T18:25:25.413554
+	SUBPROCESS>> Gathering alphainstaller settings.
+	SUBPROCESS>> Gathering information about app2 version 4.7.
+	SUBPROCESS>> Checking out data from repository.
+[LOCAL CHECKPOINT::1]>> Checked out repository
+	SUBPROCESS>> Building code base.
+[LOCAL CHECKPOINT::2]>> Codebase built
+	SUBPROCESS>> Compressing files for deployment.
+[LOCAL CHECKPOINT::3]>> Files compressed
+[LOCAL PROCEDURES COMPLETE]
+	SUBPROCESS>> Deploying app on server : 10.164.253.216
+	SUBPROCESS>> Setting up SSH connection with 10.164.253.216
+	SUBPROCESS>> Setting up SCP client.
+	SUBPROCESS>> Sending files.
+[REMOTE CHECKPOINT::10.164.253.216::1]>> Package successfully uploaded.
+	SUBPROCESS>> Extracting 'alphainstaller.tar.gz'
+[REMOTE CHECKPOINT::10.164.253.216::2]>> Package successfully extracted.
+	SUBPROCESS>> Establishing links to install application.
+[REMOTE CHECKPOINT::10.164.253.216::3]>> Links successfully established.
+[SERVER CHECKPOINT::10.164.253.216]
+[ACTION_COMPLETE]>> 2014-04-22T18:25:27.670398
+
+
+
+[ACTION_BEGIN]>> deploy : Abhimanyu : 2014-04-22T18:27:07.830372
+	SUBPROCESS>> Gathering alphainstaller settings.
+	SUBPROCESS>> Gathering information about app2 version 4.7.
+	SUBPROCESS>> Checking out data from repository.
+[LOCAL CHECKPOINT::1]>> Checked out repository
+	SUBPROCESS>> Building code base.
+[LOCAL CHECKPOINT::2]>> Codebase built
+	SUBPROCESS>> Compressing files for deployment.
+[LOCAL CHECKPOINT::3]>> Files compressed
+[LOCAL PROCEDURES COMPLETE]
+	SUBPROCESS>> Deploying app on server : 10.164.253.216
+	SUBPROCESS>> Setting up SSH connection with 10.164.253.216
+	SUBPROCESS>> Setting up SCP client.
+	SUBPROCESS>> Sending files.
+[REMOTE CHECKPOINT::10.164.253.216::1]>> Package successfully uploaded.
+	SUBPROCESS>> Extracting 'alphainstaller.tar.gz'
+[REMOTE CHECKPOINT::10.164.253.216::2]>> Package successfully extracted.
+	SUBPROCESS>> Establishing links to install application.
+[REMOTE CHECKPOINT::10.164.253.216::3]>> Links successfully established.
+[SERVER CHECKPOINT::10.164.253.216]
+[ACTION_COMPLETE]>> 2014-04-22T18:27:10.136638
+
+
+
+[ACTION_BEGIN]>> deploy : Abhimanyu : 2014-04-22T18:37:30.742705
+	SUBPROCESS>> Gathering alphainstaller settings.
+	SUBPROCESS>> Gathering information about app2 version 4.7.
+	SUBPROCESS>> Checking out data from repository.
+[LOCAL CHECKPOINT::1]>> Checked out repository
+	SUBPROCESS>> Building code base.
+[LOCAL CHECKPOINT::2]>> Codebase built
+	SUBPROCESS>> Compressing files for deployment.
+[LOCAL CHECKPOINT::3]>> Files compressed
+[LOCAL PROCEDURES COMPLETE]
+	SUBPROCESS>> Deploying app on server : 10.164.253.216
+	SUBPROCESS>> Setting up SSH connection with 10.164.253.216
+	SUBPROCESS>> Setting up SCP client.
+	SUBPROCESS>> Sending files.
+[REMOTE CHECKPOINT::10.164.253.216::1]>> Package successfully uploaded.
+	SUBPROCESS>> Extracting 'alphainstaller.tar.gz'
+[REMOTE CHECKPOINT::10.164.253.216::2]>> Package successfully extracted.
+	SUBPROCESS>> Establishing links to install application.
+[REMOTE CHECKPOINT::10.164.253.216::3]>> Links successfully established.
+[SERVER CHECKPOINT::10.164.253.216]
+[ACTION_COMPLETE]>> 2014-04-22T18:37:33.021814
+
+
+
+[ACTION_BEGIN]>> deploy : Abhimanyu : 2014-04-22T18:44:44.197976
+	SUBPROCESS>> Gathering alphainstaller settings.
+	SUBPROCESS>> Gathering information about app2 version 4.7.
+	SUBPROCESS>> Checking out data from repository.
+[LOCAL CHECKPOINT::1]>> Checked out repository
+	SUBPROCESS>> Building code base.
+[LOCAL CHECKPOINT::2]>> Codebase built
+	SUBPROCESS>> Compressing files for deployment.
+[LOCAL CHECKPOINT::3]>> Files compressed
+[LOCAL PROCEDURES COMPLETE]
+	SUBPROCESS>> Deploying app on server : 10.164.253.216
+	SUBPROCESS>> Setting up SSH connection with 10.164.253.216
+	SUBPROCESS>> Setting up SCP client.
+	SUBPROCESS>> Sending files.
+[REMOTE CHECKPOINT::10.164.253.216::1]>> Package successfully uploaded.
+	SUBPROCESS>> Extracting 'alphainstaller.tar.gz'
+[REMOTE CHECKPOINT::10.164.253.216::2]>> Package successfully extracted.
+	SUBPROCESS>> Establishing links to install application.
+[REMOTE CHECKPOINT::10.164.253.216::3]>> Links successfully established.
+[SERVER CHECKPOINT::10.164.253.216]
+[ACTION_COMPLETE]>> 2014-04-22T18:44:46.367029
+
+
+
+[ACTION_BEGIN]>> deploy : Abhimanyu : 2014-04-22T18:45:33.525803
+	SUBPROCESS>> Gathering alphainstaller settings.
+	SUBPROCESS>> Gathering information about app2 version 4.7.
+	SUBPROCESS>> Checking out data from repository.
+[LOCAL CHECKPOINT::1]>> Checked out repository
+	SUBPROCESS>> Building code base.
+[LOCAL CHECKPOINT::2]>> Codebase built
+	SUBPROCESS>> Compressing files for deployment.
+[LOCAL CHECKPOINT::3]>> Files compressed
+[LOCAL PROCEDURES COMPLETE]
+	SUBPROCESS>> Deploying app on server : 10.164.253.216
+	SUBPROCESS>> Setting up SSH connection with 10.164.253.216
+	SUBPROCESS>> Setting up SCP client.
+	SUBPROCESS>> Sending files.
+[REMOTE CHECKPOINT::10.164.253.216::1]>> Package successfully uploaded.
+	SUBPROCESS>> Extracting 'alphainstaller.tar.gz'
+[REMOTE CHECKPOINT::10.164.253.216::2]>> Package successfully extracted.
+	SUBPROCESS>> Establishing links to install application.
+[REMOTE CHECKPOINT::10.164.253.216::3]>> Links successfully established.
+[SERVER CHECKPOINT::10.164.253.216]
+[ACTION_COMPLETE]>> 2014-04-22T18:45:35.919486

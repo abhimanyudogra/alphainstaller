@@ -6,9 +6,6 @@ Created on 17-Mar-2014
 
 import ParserDepot
 
-PATH_PARENT_XML = "XMLfiles/parent_app_data.xml"
-PATH_ALPHAINSTALLER_XML = "XMLfiles/alphainstaller_cfg.xml"
-
 
 class ParentXMLParserFactory():
     '''

@@ -142,3 +142,13 @@ class AlphainstallerXMLParser(XMLParser):
             alphainstaller_xml_data[data.tag] = data.text
 
         return alphainstaller_xml_data
+    
+    def get_values(self, keys):
+        alphainstaller_xml_data = {}
+        tree = ET.parse(self.location)
+        root = tree.getroot()
+        for data in root:
+            if data.tag in keys:
+                alphainstaller_xml_data[data.tag] = data.text
+                
+        return alphainstaller_xml_data

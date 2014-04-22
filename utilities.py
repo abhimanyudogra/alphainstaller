@@ -18,11 +18,11 @@ class Lock():
         self._path = os.path.join("Locks", os.path.join(ip))
         self.app_name = app_name
     
-    def check_lock(self):       
+    def check_lock(self):
         if os.path.exists(self._path):
             _file = open(self._path, "r")
             for line in _file:
-                if line == self.app_name:
+                if line == "%s\n" % self.app_name:
                     _file.close()
                     return True          
         return False
@@ -42,7 +42,7 @@ class Lock():
         _file.close()
         _file = open(self._path, "w")
         for lock in locks:
-            if lock != self.app_name:
+            if lock != "%s\n" % self.app_name:
                 _file.write(lock)
         _file.close()
 

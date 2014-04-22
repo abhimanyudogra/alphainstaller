@@ -17,7 +17,6 @@ import Remote
 from ParserDepot import AlphainstallerXMLParser
 import LogManager
 import utilities
-
 PATH_SETTINGS_XML = "XMLfiles/alphainstaller_settings.xml"
 
 
@@ -81,19 +80,23 @@ def builder(temp_location, builder_location, builder_type):
     '''
     Builds the code base according to the information provided in the settings XML.
     '''
+    pwd = os.getcwd()
+    os.chdir(temp_location)
     location = os.path.join(temp_location, builder_location)
     build_obj = AppBuilder.BuildFactory(location, builder_type)
     build_obj.build()
+    os.chdir(pwd)
 
-
-def compresser(file_compression, parent_xml_data):
+def compresser(temp_location, file_compression, parent_xml_data):
     ''' 
     Compresses all the files: Bins, config files etc associated with the app into a single package.
     Package type is configurable in settings XML
     '''
+    pwd = os.getcwd()
+    os.chdir(temp_location)
     comp_obj = Compresser.CompresserFactory(file_compression)
     comp_obj.compress(parent_xml_data)
-
+    os.chdir(pwd)
 
 def remote_installer(log_obj, parent_xml_data, server_resume_data, app_name):
     '''
@@ -117,8 +120,6 @@ def ignite(app_name, code_base_version):
 
     log_obj.add_log("Gathering information about %s version %s." % (app_name, code_base_version))
     parent_xml_data = gather_app_data(app_name, code_base_version, settings["parent_xml_location"], settings["parent_xml_version"])
-    
-    
 
     if local_resume_cp <= log_obj.checkpoint_id:
         log_obj.add_log("Checking out data from repository.")
@@ -126,8 +127,6 @@ def ignite(app_name, code_base_version):
         log_obj.mark_local_checkpoint("Checked out repository")
     else:
         log_obj.skip_checkpoint()
-
-    os.chdir(settings["temp_folder_location"])
 
     if local_resume_cp <= log_obj.checkpoint_id:
         log_obj.add_log("Building code base.")
@@ -138,12 +137,11 @@ def ignite(app_name, code_base_version):
 
     if local_resume_cp <= log_obj.checkpoint_id:
         log_obj.add_log("Compressing files for deployment.")
-        compresser(settings["file_compression"], parent_xml_data)
+        compresser(settings["temp_folder_location"], settings["file_compression"], parent_xml_data)
         log_obj.mark_local_checkpoint("Files compressed")
     else:
         log_obj.skip_checkpoint()
-    
-    
+
     log_obj.mark_local_complete()
     remote_installer(log_obj, parent_xml_data, server_resume_data, app_name)
 

@@ -6,7 +6,6 @@ Created on 28-Mar-2014
 
 import os
 from abc import ABCMeta, abstractmethod
-
 from utilities import FatalError
 
 
@@ -44,6 +43,6 @@ class MakeBuilder(Builder):
         Builder.__init__(self)
         self.target = target
 
-    def build(self):
+    def build(self):        
         print "Invoking make-file:  %s " % self.target
-        os.system("make -f Makefile")
+        os.system("make -f %s" % self.target)
