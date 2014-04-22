@@ -4,10 +4,15 @@ Created on 31-Mar-2014
 @author: Abhimanyu
 '''
 import tarfile
+
 import XMLInfoExtracter
 
 
 class CompresserFactory():
+    ''' 
+    Factory class for compression modules. Assigns relevant object based on the mode specified in
+     settings XML.
+    '''
     def __init__(self, compression_type):
         self.comp_obj = globals()["Compresser_%s" % (compression_type)]()
 
@@ -19,6 +24,9 @@ class CompresserFactory():
 
 
 class Compresser_targz():
+    '''
+    Adds all the app files to tar.gz archive.
+    '''
     def compress(self, binary_files, config_files, scr_files):
         tar = tarfile.open("alphainstaller.tar.gz", "w:gz")
 

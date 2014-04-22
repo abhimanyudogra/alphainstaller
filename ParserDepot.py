@@ -8,7 +8,8 @@ import xml.etree.ElementTree as ET
 
 
 class XMLParser():
-    ''' Abstract Base class for all parsing modules
+    '''
+    Abstract Base class for all parsing modules
     '''
     __metaclass__ = ABCMeta
 
@@ -21,7 +22,8 @@ class XMLParser():
 
 
 class ParentXMLParser_v_0_0(XMLParser):
-    ''' Parsing module for v0.0 of Parent XML
+    '''
+    Parsing module for v0.0 of Parent XML
     '''
     def __init__(self, location):
         XMLParser.__init__(self, location)
@@ -40,21 +42,10 @@ class ParentXMLParser_v_0_0(XMLParser):
 
         return parent_xml_data
 
-    def get_tag(self, app_name, version, tag):
-        tree = ET.parse(self.location)
-        root = tree.getroot()
-
-        for app in root:
-            if app.attrib["name"] == app_name:
-                for app_version in app:
-                    if app_version.attrib["tag"] == version:
-                        for info in app_version:
-                            if info.tag == tag:
-                                return info.text
-
 
 class BinXMLParser_v_0_1(XMLParser):
-    ''' Parsing module for v2.1 of App XML.
+    '''
+    Parsing module for v0.1 of app's bin XML.
     '''
     def __init__(self, location):
         XMLParser.__init__(self, location)
@@ -74,6 +65,9 @@ class BinXMLParser_v_0_1(XMLParser):
 
 
 class CfgXMLParser_v_0_1(XMLParser):
+    '''
+    Parsing module for v0.1 of app's cfg XML
+    '''
     def __init__(self, location):
         XMLParser.__init__(self, location)
 
@@ -92,6 +86,9 @@ class CfgXMLParser_v_0_1(XMLParser):
 
 
 class TgtXMLParser_v_0_1(XMLParser):
+    '''
+    Parsing module for v0.1 of app's tgt XML
+    '''
     def __init__(self, location):
         XMLParser.__init__(self, location)
 
@@ -110,6 +107,9 @@ class TgtXMLParser_v_0_1(XMLParser):
 
 
 class ScrXMLParser_v_0_1(XMLParser):
+    '''
+    Parsing module for v0.1 of app's scr XML
+    '''
     def __init__(self, location):
         XMLParser.__init__(self, location)
 
@@ -128,6 +128,9 @@ class ScrXMLParser_v_0_1(XMLParser):
 
 
 class AlphainstallerXMLParser(XMLParser):
+    '''
+    Parsing module for v0.1 of Alphainstaller's settigs module.
+    '''
     def __init__(self, location):
         XMLParser.__init__(self, location)
 

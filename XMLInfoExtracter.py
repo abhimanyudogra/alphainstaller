@@ -11,6 +11,9 @@ PATH_ALPHAINSTALLER_XML = "XMLfiles/alphainstaller_cfg.xml"
 
 
 class ParentXMLParserFactory():
+    '''
+    Factory module for Parent XML Parsers.
+    '''
     def __init__(self, location, version):
         self.parser_obj = getattr(ParserDepot, "ParentXMLParser_v_%s" % "_".join(version.split(".")))(location)
 
@@ -22,6 +25,9 @@ class ParentXMLParserFactory():
 
 
 class BinXMLParserFactory():
+    '''
+    Factory module for Bin XML Parsers.
+    '''
     def __init__(self, location, version):
         self.parser_obj = getattr(ParserDepot, "BinXMLParser_v_%s" % "_".join(version.split(".")))(location)
 
@@ -30,6 +36,9 @@ class BinXMLParserFactory():
 
 
 class CfgXMLParserFactory():
+    '''
+    Factory module for cfg XML Parsers.
+    '''
     def __init__(self, location, version):
         self.parser_obj = getattr(ParserDepot, "CfgXMLParser_v_%s" % "_".join(version.split(".")))(location)
 
@@ -38,6 +47,9 @@ class CfgXMLParserFactory():
 
 
 class ScrXMLParserFactory():
+    '''
+    Factory module for scr XML Parsers.
+    '''
     def __init__(self, location, version):
         self.parser_obj = getattr(ParserDepot, "ScrXMLParser_v_%s" % "_".join(version.split(".")))(location)
 
@@ -46,6 +58,9 @@ class ScrXMLParserFactory():
 
 
 class TgtXMLParserFactory():
+    '''
+    Factory module for tgt XML Parsers.
+    '''
     def __init__(self, location, version):
         self.parser_obj = getattr(ParserDepot, "TgtXMLParser_v_%s" % "_".join(version.split(".")))(location)
 
@@ -54,15 +69,24 @@ class TgtXMLParserFactory():
 
 
 def get_binary_paths(location, version):
+    '''
+    Interacts with factory, retrieves and returns data.
+    '''
     parser_obj = BinXMLParserFactory(location, version)
     return parser_obj.parse()
 
 
 def get_config_file_paths(location, version):
+    '''
+    Interacts with factory, retieves and returns data.
+    '''
     parser_obj = CfgXMLParserFactory(location, version)
     return parser_obj.parse()
 
 
 def get_scr_paths(location, version):
+    '''
+    Interacts with factory, retrieves and returns data.
+    '''
     parser_obj = ScrXMLParserFactory(location, version)
     return parser_obj.parse()

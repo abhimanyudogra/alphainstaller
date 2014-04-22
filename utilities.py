@@ -5,7 +5,6 @@ Created on 31-Mar-2014
 '''
 
 import os
-import re
 
 
 class FatalError(Exception):
@@ -14,42 +13,44 @@ class FatalError(Exception):
     def __init__(self, message):
         Exception.__init__(self, message)
 
-
-class LogChecker():
-    def __init__(self, app_name, version):
-        location = os.path.join("Logs", os.path.join(os.path.join(app_name, "v%s" % version), "log"))
-        self.log_f = open(location, "r").readlines()
-
-    def check_successful_completion(self):
-        i = 1
-        if self.log_f:
-            while True:
-                actcomp_re = re.compile('^\[ACTION_COMPLETE\]')
-                actstrt_re = re.compile('^\[ACTION_BEGIN\]')
-                if actcomp_re.search(self.log_f[-i]):
-                    return True
-                if actstrt_re.search(self.log_f[-i]):
-                    return False
-                i += 1
-        else:
-            return True
-
-    def get_last_checkpoint(self):
-        i = 1
-        chkpt_re = re.compile('^\[CHECKPOINT::(\d+)\]')
-        actstrt_re = re.compile('^\[ACTION_BEGIN\]')
-        while True:
-            line = self.log_f[-i]
-            latest_checkpoint = chkpt_re.findall(line)
-            no_checkpoint = actstrt_re.search(line)
-            if latest_checkpoint:
-                return latest_checkpoint[0]
-            elif no_checkpoint:
-                return 0
-            i += 1
+class Lock():
+    def __init__(self, ip, app_name):
+        self._path = os.path.join("Locks", os.path.join(ip))
+        self.app_name = app_name
+    
+    def check_lock(self):       
+        if os.path.exists(self._path):
+            _file = open(self._path, "r")
+            for line in _file:
+                if line == self.app_name:
+                    _file.close()
+                    return True          
+        return False
+    
+    def create_lock(self):
+        _dir = os.path.dirname(self._path)
+        if not os.path.exists(_dir):
+            os.makedirs(_dir)
+            
+        _file = open(self._path, "a")
+        _file.write("%s\n" % self.app_name)
+        _file.close()
+    
+    def unlock(self):
+        _file = open(self._path, "r")
+        locks = _file.readlines()
+        _file.close()
+        _file = open(self._path, "w")
+        for lock in locks:
+            if lock != self.app_name:
+                _file.write(lock)
+        _file.close()
 
 
 def yes_or_no(question, default):
+    '''
+    Returns True if user answers Y and False if user answers N
+    '''
     while True:
         print "%s (y/n) : (default answer is '%s')" % (question, default)
         response = raw_input()

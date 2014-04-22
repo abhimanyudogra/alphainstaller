@@ -4,11 +4,15 @@ Created on 11-Mar-2014
 @author: Abhimanyu
 '''
 import pam
-import utilities
 from getpass import getpass
+
+import utilities
 
 
 def verify():
+    '''
+    Verifies username and password. Returns the username for logging purposes, if access is granted.
+    '''
     while True:
         print "Username: ",
         username = raw_input()

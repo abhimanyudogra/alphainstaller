@@ -26,6 +26,9 @@ print "Initiating %s procedure..." % (args.action.upper())
 
 
 if args.action in auth_actions:
+    '''
+    Calling module based on the action provided as command line argument.
+    '''
     try:
         locals()[args.action].ignite(args.app_name, args.version)
     except utilities.FatalError:
