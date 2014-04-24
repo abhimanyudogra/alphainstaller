@@ -14,8 +14,8 @@ class ParentXMLParserFactory():
     def __init__(self, location, version):
         self.parser_obj = getattr(ParserDepot, "ParentXMLParser_v_%s" % "_".join(version.split(".")))(location)
 
-    def parse(self, app_name, app_version):
-        return self.parser_obj.parse(app_name, app_version)
+    def parse(self, session):
+        return self.parser_obj.parse(session)
 
     def get_tag(self, tag):
         return self.parser_obj.get_tag(self, tag)

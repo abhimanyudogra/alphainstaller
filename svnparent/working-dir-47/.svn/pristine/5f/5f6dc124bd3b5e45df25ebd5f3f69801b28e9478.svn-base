@@ -5,9 +5,6 @@
  *      Author: Abhimanyu
  */
 
-
-
-
 #include<iostream>
 #include<vector>
 #include<algorithm>
@@ -15,21 +12,7 @@ using namespace std;
 
 void print_graph(vector<vector<vector<string>>>& graph, int ROW_COUNT, int COL_COUNT)
 {
-	//Function to print the graph.
-	for(int i=0; i<ROW_COUNT; i++)
-	{
-		for(int j=0; j<COL_COUNT; j++)
-		{
-			for (string element:graph[i][j])
-			{
-				cout<<element<<", ";
-			}
-			cout<<graph[i][j].size();
-			cout<<"\t\t\t";
-		}
-		cout<<"\n";
-	}
-	cout<<"\n\n\n";
+
 }
 
 void longest_common_subsequence(string s_one, string s_two)

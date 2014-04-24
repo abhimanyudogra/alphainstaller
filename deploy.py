@@ -33,13 +33,13 @@ def authorize():
         sys.exit()
 
 
-def check_log(app_name, version):
+def check_log(session):
     '''
     Checks the log file for the app + version for abrupt termination of last action.
     Presents user with choice to continue the last operation where it stopped or
      a fresh start.
     '''
-    lc_obj = LogManager.LogChecker(app_name, version)
+    lc_obj = LogManager.LogChecker(session)
     if not lc_obj.check_successful_completion():
         if utilities.yes_or_no("Last action for this application and version was not successful, do you want to resume that operation?", "y"):
             return lc_obj.get_resume_data()
@@ -53,12 +53,12 @@ def gather_settings():
     return settings_obj.parse()
 
 
-def gather_app_data(app_name, app_version, location, version):
+def gather_app_data(session, location, xml_version):
     '''
     Parses parent XML to obtain addresses to the rest of the XML's for the specific app + version.
     '''
-    parent_xml_obj = XMLInfoExtracter.ParentXMLParserFactory(location, version)
-    return parent_xml_obj.parse(app_name, app_version)
+    parent_xml_obj = XMLInfoExtracter.ParentXMLParserFactory(location, xml_version)
+    return parent_xml_obj.parse(session)
 
 
 def checkout(code_base_version, repo_type, repo_location, target):
@@ -70,7 +70,7 @@ def checkout(code_base_version, repo_type, repo_location, target):
             rmtree(target)      # Clearing temporary folder off previous junk content
             os.mkdir(target)
     else:
-        os.mkdir(target)
+        os.makedirs(target)
     version_path = os.path.join(repo_location, "v%s" % code_base_version)
     checkout_obj = RepositoryInteraction.CheckoutFactory(repo_type, version_path, target)
     checkout_obj.checkout_code()
@@ -98,51 +98,54 @@ def compresser(temp_location, file_compression, parent_xml_data):
     comp_obj.compress(parent_xml_data)
     os.chdir(pwd)
 
-def remote_installer(log_obj, parent_xml_data, server_resume_data, app_name):
+def remote_installer(session, log_obj, parent_xml_data, server_resume_data):
     '''
     Summons the Remote.py module which handles all the remote operations.
     '''
-    transmit_obj = Remote.RemoteFactory(parent_xml_data)
-    transmit_obj.deploy(log_obj, server_resume_data, app_name)
+    transmit_obj = Remote.RemoteOperator(session, parent_xml_data)
+    transmit_obj.install(log_obj, server_resume_data)
 
 
-def ignite(app_name, code_base_version):
+def ignite(session):
     '''
     The driver module for deploy. Calls respective modules for the entire deployment process.
     '''
-    username = authorize()
-    log_obj = LogManager.Logger(app_name, code_base_version, "deploy", username)
+    session["username"] = authorize()
     
-    local_resume_cp, server_resume_data = check_log(app_name, code_base_version)
+    log_obj = LogManager.Logger(session)
+    
+    local_resume_cp, server_resume_data = check_log(session)
 
     log_obj.add_log("Gathering alphainstaller settings.")
     settings = gather_settings()
+    
+    session["temp_folder_location"] = os.path.join(settings["temp_folder_location"], session["username"])
 
-    log_obj.add_log("Gathering information about %s version %s." % (app_name, code_base_version))
-    parent_xml_data = gather_app_data(app_name, code_base_version, settings["parent_xml_location"], settings["parent_xml_version"])
+    log_obj.add_log("Gathering information about %s version %s." % (session["app_name"], session["version"]))
+    parent_xml_data = gather_app_data(session, settings["parent_xml_location"], settings["parent_xml_version"])
 
     if local_resume_cp <= log_obj.checkpoint_id:
         log_obj.add_log("Checking out data from repository.")
-        checkout(code_base_version, settings["repo_type"], settings["repo_location"], settings["temp_folder_location"])
+        checkout(session["version"], settings["repo_type"], settings["repo_location"], session["temp_folder_location"])
         log_obj.mark_local_checkpoint("Checked out repository")
     else:
         log_obj.skip_checkpoint()
 
     if local_resume_cp <= log_obj.checkpoint_id:
         log_obj.add_log("Building code base.")
-        builder(settings["temp_folder_location"], settings["builder_file_location"], settings["builder_type"])
+        builder(session["temp_folder_location"], settings["builder_file_location"], settings["builder_type"])
         log_obj.mark_local_checkpoint("Codebase built")
     else:
         log_obj.skip_checkpoint()
 
     if local_resume_cp <= log_obj.checkpoint_id:
         log_obj.add_log("Compressing files for deployment.")
-        compresser(settings["temp_folder_location"], settings["file_compression"], parent_xml_data)
+        compresser(session["temp_folder_location"], settings["file_compression"], parent_xml_data)
         log_obj.mark_local_checkpoint("Files compressed")
     else:
         log_obj.skip_checkpoint()
 
     log_obj.mark_local_complete()
-    remote_installer(log_obj, parent_xml_data, server_resume_data, app_name)
+    remote_installer(session, log_obj, parent_xml_data, server_resume_data)
 
     log_obj.action_complete()

@@ -12,20 +12,19 @@ class Logger():
     '''
     Creates log entires for actions. Stores the username, time, checkpoints and subprocesses.
     '''
-    def __init__(self, app_name, version, action, user):
+    def __init__(self, session):
         '''
         Creates the log file if it doesn't exist.
         Begins a new entry for the current action with time-stamp.
         '''
         self.checkpoint_id = 0
-
-        log_location = os.path.join("Logs", os.path.join(app_name, "v%s" % version))
+        log_location = os.path.join("Logs", os.path.join(session["app_name"], "v%s" % session["version"]))
         if not os.path.exists(log_location):
             os.makedirs(log_location)
         self.file_obj = open(os.path.join(log_location, "log"), "a+")
         if self.file_obj.read():
             self.file_obj.write("\n\n\n")
-        self.file_obj.write("[ACTION_BEGIN]>> %s : %s : %s\n" % (action, user, datetime.now().isoformat()))
+        self.file_obj.write("[ACTION_BEGIN]>> %s : %s : %s\n" % (session["action"], session["username"], datetime.now().isoformat()))
         
     def reset_cp(self):
         self.checkpoint_id = 0
@@ -51,6 +50,9 @@ class Logger():
         self.file_obj.write("[LOCAL CHECKPOINT::%d]>> %s\n" % (self.checkpoint_id, desc))
 
     def mark_server_checkpoint(self, ip):
+        '''
+        Marks the completion of operations of a specific server.
+        '''
         print "Marking operations on server %s as successful." % ip
         self.file_obj.write("[SERVER CHECKPOINT::%s]\n" % ip)
         self.reset_cp()
@@ -87,8 +89,8 @@ class LogChecker():
     '''
     Log file checker module that detects abrupt termination of program and extracts last successful checkpoint.
     '''
-    def __init__(self, app_name, version):
-        location = os.path.join("Logs", os.path.join(os.path.join(app_name, "v%s" % version), "log"))
+    def __init__(self, session):
+        location = os.path.join("Logs", os.path.join(os.path.join(session["app_name"], "v%s" % session["version"]), "log"))
         self.log_f = open(location, "r").readlines()
         
     def get_resume_data(self):
@@ -117,6 +119,9 @@ class LogChecker():
             return True
     
     def check_local_completion(self):
+        '''
+        Checks whether the local operations were completed. Returns True if they were, False otherwise.
+        '''
         i = 1
         if self.log_f:
             lcomp_re = re.compile('^\[LOCAL PROCEDURES COMPLETE\]')
@@ -135,7 +140,7 @@ class LogChecker():
         Extracts last successful checkpoint.
         '''
         i = 1
-        chkpt_re = re.compile('^\[LOCAL CHECKPOINT::(\d+)\]')
+        chkpt_re = re.compile('^\[LOCAL CHECKPOINT::(\d+)\]') 
         actstrt_re = re.compile('^\[ACTION_BEGIN\]')
         while True:
             line = self.log_f[-i]
@@ -148,6 +153,12 @@ class LogChecker():
             i += 1
         
     def get_deployed_servers(self):
+        '''
+        Returns two lists.
+        1 - A list that contains the ip addresses of all the servers on which, the app was successfully deployed in the last session.
+        2 - Second list, that contains tuple pairs of all servers, on which the app was partially deployed without completion. 
+        The second component of the pair is the last successful checkpoint of that server AS INTERGER TYPE.
+        '''
         i = 1
         completed_servers = []
         partially_completed_servers = []
@@ -162,7 +173,10 @@ class LogChecker():
             if completed_server:
                 completed_servers.append((completed_server, 0))
             elif incomplete_server and (incomplete_server[0][0] not in completed_servers) and (incomplete_server[0][0] not in servers_already_noted):
-                partially_completed_servers.append((incomplete_server[0][0], int(incomplete_server[0][1])))
+                partially_completed_servers.append((incomplete_server[0][0], int(incomplete_server[0][1]))) 
+                '''
+                Above, the checkpoint is converted to int type before being appended.
+                '''
                 servers_already_noted.add(incomplete_server[0][0])
             elif lcomp_re.search(self.log_f[-i]):
                 break

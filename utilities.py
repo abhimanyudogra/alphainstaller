@@ -8,17 +8,25 @@ import os
 
 
 class FatalError(Exception):
-    ''' Exception class for errors that force the application to terminate.
+    ''' 
+    Exception class for errors that force the application to terminate.
     '''
     def __init__(self, message):
         Exception.__init__(self, message)
 
 class Lock():
+    '''
+    This module provides the locking mechanisms to make sure only one operation is performed on a 
+    specific 'app + target machine' combination at a time.
+    '''
     def __init__(self, ip, app_name):
         self._path = os.path.join("Locks", os.path.join(ip))
         self.app_name = app_name
     
     def check_lock(self):
+        '''
+        Checks whether the app is already being deployed on the server.
+        '''
         if os.path.exists(self._path):
             _file = open(self._path, "r")
             for line in _file:
@@ -28,6 +36,10 @@ class Lock():
         return False
     
     def create_lock(self):
+        '''
+        Creates a lock to forbid any other alphainstaller process from performing
+        any kind of operation on that specific app on that specific machine.
+        '''
         _dir = os.path.dirname(self._path)
         if not os.path.exists(_dir):
             os.makedirs(_dir)
@@ -37,6 +49,9 @@ class Lock():
         _file.close()
     
     def unlock(self):
+        '''
+        Removes a previously created lock.
+        '''
         _file = open(self._path, "r")
         locks = _file.readlines()
         _file.close()

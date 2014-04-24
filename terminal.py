@@ -25,6 +25,7 @@ arguments.add_argument("-v", "--version", metavar="", default=False)
 args = arguments.parse_args()
 
 print "Initiating %s procedure..." % (args.action.upper())
+session = {"app_name" : args.app_name, "version" : args.version, "action" : args.action}
 
 
 if args.action in auth_actions:
@@ -32,7 +33,7 @@ if args.action in auth_actions:
     Calling module based on the action provided as command line argument.
     '''
     try:
-        locals()[args.action].ignite(args.app_name, args.version)
+        locals()[args.action].ignite(session)
     except utilities.FatalError:
         print utilities.FatalError.message()
 else:
