@@ -1,0 +1,3 @@
+all:
+	g++ -std=c++11 app2.cpp -o bin/Release/app2bin
+	g++ -std=c++11 support.cpp -o bin/Release/app2support

@@ -210,6 +210,9 @@ class SCP_paramiko(object):
                                                                                   "alphainstaller.tar.gz", "alphainstaller.tar.gz"))
         type(stdin)
         self.display_activity(stdout, stderr)
+        
+    def remote_diff(self):
+        pass
 
     def SSH_connector(self):
         '''
@@ -231,6 +234,8 @@ class SCP_paramiko(object):
         ip_address = self.server_data["ip_address"]
         log_obj.add_log("Setting up SSH connection with %s" % self.server_data["ip_address"])
         ssh = self.SSH_connector()
+        
+        self.remote_diff()
 
         log_obj.add_log("Setting up SCP client.")
         scp_obj = scp.SCPClient(ssh.get_transport())

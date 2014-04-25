@@ -1,8 +1,8 @@
 [BINARIES]
-/home/Abhimanyu/WS/alphainstaller/temp/Abhimanyu/bin/Release/app2 : 2287e9db104e54e1dcc484e65c16d89416e836cb
-/home/Abhimanyu/WS/alphainstaller/temp/Abhimanyu/bin/debug/app2support : 21261326757ce2d838e0cc37f50b5fca47381055
+app2 : 2287e9db104e54e1dcc484e65c16d89416e836cb
+support/bin/app2support : 21261326757ce2d838e0cc37f50b5fca47381055
 [CONFIGS]
-/home/Abhimanyu/WS/alphainstaller/temp/Abhimanyu/config/config.txt : f36c743b26ef3ae4f934076e5a3d3eb2430d0b84
-/home/Abhimanyu/WS/alphainstaller/temp/Abhimanyu/config2.txt : 901950c4448a609297ebeb9ef0dd8051408dda0d
+config/config.txt : f36c743b26ef3ae4f934076e5a3d3eb2430d0b84
+config/config2.txt : 901950c4448a609297ebeb9ef0dd8051408dda0d
 [SCRIPTS]
-/home/Abhimanyu/WS/alphainstaller/temp/Abhimanyu/scripts/app2script : c6ba1cb9cba831cd4a58e64faa9e6db0a7ba791b
+scripts/app2script : 0ce8635755783efdf7a531aac5301d2fc1315ad0
