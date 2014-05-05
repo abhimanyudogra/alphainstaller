@@ -62,21 +62,28 @@ class Lock():
         _file.close()
 
 
-def yes_or_no(question, default):
+def yes_or_no(question, default, override):
     '''
     Returns True if user answers Y and False if user answers N
     '''
-    while True:
-        print "%s (y/n) : (default answer is '%s')" % (question, default)
-        response = raw_input()
-        if not response and default in {'y', 'Y'}:
+    print "%s (y/n) : (default answer is '%s')" % (question, default)
+    if override:
+        print "Question overridden. Going with default answer %s" % (default)
+        if default in {'y', 'Y'}:
             return True
-        elif not response and default in {'n', 'N'}:
-            return False
-        elif response in {"y", "n", "Y", "N"}:
-            if response.lower() == "y":
-                return True
-            else:
-                return False
         else:
-            print "Invalid response, please try again."
+            return False
+    else:        
+        while True:
+            response = raw_input()
+            if not response and default in {'y', 'Y'}:
+                return True
+            elif not response and default in {'n', 'N'}:
+                return False
+            elif response in {"y", "n", "Y", "N"}:
+                if response.lower() == "y":
+                    return True
+                else:
+                    return False
+            else:
+                print "Invalid response, please try again."

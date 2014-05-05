@@ -21,11 +21,21 @@
       <version tag="4.7">	   
 	<bin_xml_location>/home/Abhimanyu/WS/alphainstaller/XMLfiles/app2/app2_v4.7/app2_v4.7_bin.xml</bin_xml_location>
 	<bin_xml_version>0.1</bin_xml_version>
-	<cfg_xml_location >/home/Abhimanyu/WS/alphainstaller/XMLfiles/app2/app2_v4.7/app2_v4.7_cfg.xml</cfg_xml_location>
+	<cfg_xml_location>/home/Abhimanyu/WS/alphainstaller/XMLfiles/app2/app2_v4.7/app2_v4.7_cfg.xml</cfg_xml_location>
 	<cfg_xml_version>0.1</cfg_xml_version>
 	<tgt_xml_location>/home/Abhimanyu/WS/alphainstaller/XMLfiles/app2/app2_v4.7/app2_v4.7_tgt.xml</tgt_xml_location>
 	<tgt_xml_version>0.1</tgt_xml_version>
 	<scr_xml_location>/home/Abhimanyu/WS/alphainstaller/XMLfiles/app2/app2_v4.7/app2_v4.7_scr.xml</scr_xml_location>
+	<scr_xml_version>0.1</scr_xml_version>
+      </version>
+      <version tag="4.8">	   
+	<bin_xml_location>/home/Abhimanyu/WS/alphainstaller/XMLfiles/app2/app2_v4.8/app2_v4.8_bin.xml</bin_xml_location>
+	<bin_xml_version>0.1</bin_xml_version>
+	<cfg_xml_location>/home/Abhimanyu/WS/alphainstaller/XMLfiles/app2/app2_v4.8/app2_v4.8_cfg.xml</cfg_xml_location>
+	<cfg_xml_version>0.1</cfg_xml_version>
+	<tgt_xml_location>/home/Abhimanyu/WS/alphainstaller/XMLfiles/app2/app2_v4.8/app2_v4.8_tgt.xml</tgt_xml_location>
+	<tgt_xml_version>0.1</tgt_xml_version>
+	<scr_xml_location>/home/Abhimanyu/WS/alphainstaller/XMLfiles/app2/app2_v4.8/app2_v4.8_scr.xml</scr_xml_location>
 	<scr_xml_version>0.1</scr_xml_version>
       </version>
     </app>

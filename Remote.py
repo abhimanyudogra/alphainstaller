@@ -7,6 +7,7 @@ Created on 31-Mar-2014
 import paramiko
 import scp
 import os
+import re
 import socket
 
 import XMLInfoExtracter
@@ -52,46 +53,46 @@ class RemoteOperator(object):
                 _queue.append((server,checkpoint))
         return _queue
     
-    def check_state(self, session, ip_address):
-        state_file_path = os.path.join(os.path.join("States", ip_address), session["app_name"])
-        if session["action"] == "deploy":
+    def check_state(self, ip_address):
+        state_file_path = os.path.join(os.path.join("States", ip_address), self.session["app_name"])
+        if self.session["action"] == "deploy":
             if os.path.exists(state_file_path):
                 question = "A statefile of app %s on server %s was found, implying the app has already "\
-                "been deployed on the server before.\n Do you wish to continue? Answering 'n' will cause "\
-                "alphainstaller to drop operations on this server." % (session["app_name"], ip_address)
-                if utilities.yes_or_no(question, "n"):
+                "been deployed on the server before.\nDo you wish to continue? Answering 'n' will cause "\
+                "alphainstaller to drop operations on this server." % (self.session["app_name"], ip_address)
+                if utilities.yes_or_no(question, XMLInfoExtracter.get_default("continue_if_state_exists"), self.session["silent"]):
                     question = "Do you wish to  'update' rather than 'deploy' for this server?\n"\
                      "Answering 'n' will force Alphainstaller to run in 'deploy' mode"
-                    if utilities.yes_or_no(question, "n"):
-                        session["action"] = "update"    
+                    if utilities.yes_or_no(question, XMLInfoExtracter.get_default("convert_to_update_if_state_exists"), self.session["silent"]):
+                        self.session["action"] = "update"    
                     return True
                 else:
                     return False
             else:
                 return True
         
-        elif session["action"] == "update":
+        elif self.session["action"] == "update":
             if not os.path.exists(state_file_path):
                 question = "The state file of %s for server %s was not found. Which implies that the "\
                 "alphainstaller doesn't remember the app previously being deployed on that server.\n This "\
                 "will some features to not be available, like local and remote diffs.\n Do you wish to continue? "\
-                "Answering 'n' will cause alphainstaller to drop operations on this server." % (session["app_name"], ip_address)
-                if utilities.yes_or_no(question, "n"):
-                    session["action"] = "deploy"
+                "Answering 'n' will cause alphainstaller to drop operations on this server." % (self.session["app_name"], ip_address)
+                if utilities.yes_or_no(question, XMLInfoExtracter.get_default("force_if_state_not_found"), self.session["silent"]):
+                    self.session["action"] = "deploy"
                     return True
                 else:
                     return False
      
     def display_local_diff(self, ip_address):    
         diff_obj = StateLogger.LocalStateCheck(self.session, ip_address)
-        diff_obj.diff()      
+        diff_obj.local_diff()      
 
     def install(self, log_obj, server_resume_data):
         '''
         Calls the deploy method for every target machine.
         '''
         _queue = self.build_server_queue(server_resume_data)
-        state_obj = StateLogger.StateCreater(self.session, self.parent_xml_data)
+        state_obj = StateLogger.LocalStateManager(self.session, self.parent_xml_data)
         state_obj.create_statefile()
         action_backup = self.session["action"]
         
@@ -102,20 +103,19 @@ class RemoteOperator(object):
             server = server_and_checkpoint[0]
             checkpoint = server_and_checkpoint[1]
             
-            if self.check_state(self.session, server["ip_address"]):
-                
+            if self.check_state(server["ip_address"]):                
                 if self.session["action"] == "update":
                     self.display_local_diff(server["ip_address"])
-                    question = "Are you satisfied with the diff? Shall the operations be resumed on this server?"
-                    if not utilities.yes_or_no(question, "y"):
+                    question = "Are you satisfied with the diff? Selecting 'n' will make AlphaInstaller skip the procedures for the current server."
+                    if not utilities.yes_or_no(question, XMLInfoExtracter.get_default("local_diff_satisfaction"), self.session["silent"]):
                         green_light = False
                         
                 if green_light:           
                     lock_obj = utilities.Lock(server["ip_address"], self.session["app_name"])
                     if lock_obj.check_lock():
-                        question = ''''The app is currently being deployed/modified on target server %s.
-                        Do you want to add this server to the end of queue?''' % server["ip_address"]
-                        if utilities.yes_or_no(question, "y"):
+                        question = "The app is currently being deployed/modified on target server %s.\n"\
+                        "Do you want to add this server to the end of queue?" % server["ip_address"]
+                        if utilities.yes_or_no(question, XMLInfoExtracter.get_default("enqueue_if_locked"), self.session["silent"]):
                             _queue.append(server_and_checkpoint)
                     else:           
                         log_obj.add_log("Deploying app on server : %s" % server["ip_address"])
@@ -126,18 +126,18 @@ class RemoteOperator(object):
                                 self.remote_obj.deploy(log_obj, checkpoint)
                             except socket.error:
                                 lock_obj.unlock() 
-                                question = '''A network problem has occurred while remotely accessing server %s. Please make sure the 
-                                system is connected to the server. Do you wish to add this server to the back of queue for future 
-                                consideration? Otherwise the server will be dropped.''' % server["ip_address"]
-                                if utilities.yes_or_no(question, 'n'):
+                                question = "A network problem has occurred while remotely accessing server %s. Please make sure the"\
+                                "system is connected to the server. Do you wish to add this server to the back of queue for future"\
+                                "consideration? Otherwise the server will be dropped." % server["ip_address"]
+                                if utilities.yes_or_no(question, XMLInfoExtracter.get_default("enqueue_if_network_error"), self.session["silent"]):
                                     _queue.append((server, log_obj.checkpoint_id))
                                     log_obj.reset_cp()
                                     continue
                             except:
                                 lock_obj.unlock()
-                                question = ''' An error halted the operations on server %s .Do you wish to add this server to the back of
-                                queue for future consideration? Otherwise the server will be dropped. '''
-                                if utilities.yes_or_no(question, 'n'):
+                                question = "An error halted the operations on server %s .Do you wish to add this server to the back of"\
+                                "queue for future consideration? Otherwise the server will be dropped."
+                                if utilities.yes_or_no(question, XMLInfoExtracter.get_default("enqueue_if_error"), self.session["silent"]):
                                     _queue.append((server, log_obj.checkpoint_id))
                                     log_obj.reset_cp()
                                     continue
@@ -211,9 +211,29 @@ class SCP_paramiko(object):
         type(stdin)
         self.display_activity(stdout, stderr)
         
-    def remote_diff(self):
-        pass
-
+    def store_state(self, ssh):
+        stdin, stdout, stderr = ssh.exec_command("find %s -type l -print0 | sort -z | xargs -0 sha1sum" % self.server_data["prod_folder_location"])
+        type(stdin)
+        r_diff_obj = StateLogger.RemoteStateManager(self.server_data["ip_address"], self.server_data["prod_folder_location"])
+        r_diff_obj.update_server_state(stdout)
+        
+    def check_state(self, ssh):
+        stdin, stdout, stderr = ssh.exec_command("find %s -type l -print0 | sort -z | xargs -0 sha1sum" % self.server_data["prod_folder_location"])
+        type(stdin)
+        r_diff_obj = StateLogger.RemoteStateCheck(self.server_data["ip_address"], self.server_data["prod_folder_location"])
+        return r_diff_obj.remote_diff(stdout)
+    
+    def cleaner(self, ssh):
+        old_state_location = os.path.join(os.path.join("States",self.server_data["ip_address"]), self.session["app_name"])
+        old_state = open(old_state_location, "r")
+        hash_re = re.compile(" : ")
+        for line in old_state:
+            if hash_re.search(line):
+                line_data = line.split(" : ")
+                stdin, stdout, stderr = ssh.exec_command("rm -v %s" % os.path.join(self.server_data["prod_folder_location"], line_data[0]))
+                type(stdin)
+                self.display_activity(stdout, stderr)            
+            
     def SSH_connector(self):
         '''
         Uses paramiko to establish a SSH connection to remote server.
@@ -234,32 +254,54 @@ class SCP_paramiko(object):
         ip_address = self.server_data["ip_address"]
         log_obj.add_log("Setting up SSH connection with %s" % self.server_data["ip_address"])
         ssh = self.SSH_connector()
-        
-        self.remote_diff()
 
         log_obj.add_log("Setting up SCP client.")
         scp_obj = scp.SCPClient(ssh.get_transport())
-
-        if (start_from_cp <= log_obj.checkpoint_id):
-            log_obj.add_log("Sending files.")
-            scp_obj.put(os.path.join(self.session["temp_folder_location"], "alphainstaller.tar.gz"),
-                        self.server_data["release_folder_location"])
-            log_obj.mark_remote_checkpoint("Package successfully uploaded.", ip_address)
-        else:
-            log_obj.skip_checkpoint()
         
-        if (start_from_cp <= log_obj.checkpoint_id):
-            log_obj.add_log("Extracting 'alphainstaller.tar.gz'")
-            self.extracter(ssh)
-            log_obj.mark_remote_checkpoint("Package successfully extracted.", ip_address)
-        else:
-            log_obj.skip_checkpoint()
+        green_light = True
 
-        if (start_from_cp <= log_obj.checkpoint_id):
-            log_obj.add_log("Establishing links to install application.")
-            self.linker(ssh)
-            log_obj.mark_remote_checkpoint("Links successfully established.", ip_address)
-        else:
-            log_obj.skip_checkpoint()
-        
+        if self.session["action"] == "update":
+            if self.check_state(ssh):
+                question = "Are you satisfied with the diff? Selecting 'n' will make AlphaInstaller skip the procedures for the current server."            
+                if not utilities.yes_or_no(question, XMLInfoExtracter.get_default("remote_diff_satisfaction"), self.session["silent"]):
+                    green_light = False
+
+        if green_light:   
+            if (start_from_cp <= log_obj.checkpoint_id):
+                log_obj.add_log("Sending files.")
+                scp_obj.put(os.path.join(self.session["temp_folder_location"], "alphainstaller.tar.gz"),
+                            self.server_data["release_folder_location"])
+                log_obj.mark_remote_checkpoint("Package successfully uploaded.", ip_address)
+            else:
+                log_obj.skip_checkpoint()
+
+            if (start_from_cp <= log_obj.checkpoint_id):
+                log_obj.add_log("Extracting package")
+                self.extracter(ssh)
+                log_obj.mark_remote_checkpoint("Package successfully extracted.", ip_address)
+            else:
+                log_obj.skip_checkpoint()
+            
+            if self.session["action"] == "update": 
+                if (start_from_cp <= log_obj.checkpoint_id):
+                    log_obj.add_log("Removing old files.")
+                    self.cleaner(ssh)
+                    log_obj.mark_remote_checkpoint("Old app files removed.", ip_address)
+                else:
+                    log_obj.skip_checkpoint()
+
+            if (start_from_cp <= log_obj.checkpoint_id):
+                log_obj.add_log("Establishing links to install application.")
+                self.linker(ssh)
+                log_obj.mark_remote_checkpoint("Links successfully established.", ip_address)
+            else:
+                log_obj.skip_checkpoint()
+
+            if (start_from_cp <= log_obj.checkpoint_id):
+                log_obj.add_log("Storing server state.")
+                self.store_state(ssh)
+                log_obj.mark_remote_checkpoint("Server state recorded.", ip_address)
+            else:
+                log_obj.skip_checkpoint()
+
         ssh.close()

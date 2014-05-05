@@ -5,6 +5,7 @@ Created on 17-Mar-2014
 '''
 
 import ParserDepot
+PATH_SETTINGS_XML = "XMLfiles/alphainstaller_settings.xml"
 
 
 class ParentXMLParserFactory():
@@ -87,3 +88,11 @@ def get_scr_paths(location, version):
     '''
     parser_obj = ScrXMLParserFactory(location, version)
     return parser_obj.parse()
+
+def get_default(key):
+    '''
+    Gets default value from AlphaInstaller's settings XML.
+    '''
+    settings_obj = ParserDepot.AlphainstallerXMLParser(PATH_SETTINGS_XML)
+    return settings_obj.get_default(key)
+    

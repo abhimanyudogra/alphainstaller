@@ -7,8 +7,9 @@ Created on 11-Mar-2014
 import os
 from shutil import rmtree
 import sys
+from time import sleep
 
-import authorization
+
 import XMLInfoExtracter
 import RepositoryInteraction
 import AppBuilder
@@ -20,19 +21,6 @@ import utilities
 PATH_SETTINGS_XML = "XMLfiles/alphainstaller_settings.xml"
 
 
-def authorize():
-    '''
-    Authorizes user based on OS login username and password.
-    The username is then used to mark the user against the action in log entries.
-    '''
-    username = authorization.verify()
-    if username:
-        print "Access granted."
-        return username
-    else:
-        sys.exit()
-
-
 def check_log(session):
     '''
     Checks the log file for the app + version for abrupt termination of last action.
@@ -41,7 +29,8 @@ def check_log(session):
     '''
     lc_obj = LogManager.LogChecker(session)
     if not lc_obj.check_successful_completion():
-        if utilities.yes_or_no("Last action for this application and version was not successful, do you want to resume that operation?", "y"):
+        if utilities.yes_or_no("Last action for this application and version was not successful, do you want to resume that operation?",
+                                XMLInfoExtracter.get_default("resume_if_unsuccessful"), session["silent"]):
             return lc_obj.get_resume_data()
     return 0, {"completed_servers":[], "partially_completed_servers":[]}
 
@@ -110,8 +99,7 @@ def ignite(session):
     '''
     The driver module for deploy. Calls respective modules for the entire deployment process.
     '''
-    session["username"] = authorize()
-    
+
     log_obj = LogManager.Logger(session)
     
     local_resume_cp, server_resume_data = check_log(session)

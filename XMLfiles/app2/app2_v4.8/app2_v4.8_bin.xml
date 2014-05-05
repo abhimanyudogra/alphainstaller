@@ -1,0 +1,14 @@
+<bin_data>
+  <binary>
+    <code_base_location>bin/Release/app2</code_base_location>
+    <target_location>app2</target_location>    
+  </binary>
+  <binary>
+    <code_base_location>bin/debug/app2support</code_base_location>
+    <target_location>support/bin/app2support</target_location>
+  </binary>
+  <binary>
+    <code_base_location>bin/Release/app2support2</code_base_location>
+    <target_location>support/bin/additional/app2support2</target_location>
+  </binary>
+</bin_data>

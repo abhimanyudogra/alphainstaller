@@ -1,8 +1,0 @@
-[BINARIES]
-app2bin : 2287e9db104e54e1dcc484e65c16d89416e836cb
-support/app2support : 21261326757ce2d838e0cc37f50b5fca47381055
-[CONFIGS]
-config/config.txt : f36c743b26ef3ae4f934076e5a3d3eb2430d0b84
-config/config2.txt : 901950c4448a609297ebeb9ef0dd8051408dda0d
-[SCRIPTS]
-scripts/app2script2 : f085b13922668bc6cbcfc681102d09f66e3e4955

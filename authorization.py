@@ -20,7 +20,7 @@ def verify():
         if(pam.authenticate(username, password)):
             return username
         else:
-            if not utilities.yes_or_no("Invalid username or password. Do you want to try again?", "y"):
+            if not utilities.yes_or_no("Invalid username or password. Do you want to try again?", "y", False):
                 break
 
     return False

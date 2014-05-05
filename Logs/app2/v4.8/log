@@ -1,0 +1,147 @@
+[ACTION_BEGIN]>> deploy : Abhimanyu : 2014-05-05T18:22:11.036524
+	SUBPROCESS>> Gathering alphainstaller settings.
+	SUBPROCESS>> Gathering information about app2 version 4.8.
+	SUBPROCESS>> Checking out data from repository.
+[LOCAL CHECKPOINT::1]>> Checked out repository
+	SUBPROCESS>> Building code base.
+[LOCAL CHECKPOINT::2]>> Codebase built
+	SUBPROCESS>> Compressing files for deployment.
+[LOCAL CHECKPOINT::3]>> Files compressed
+[LOCAL PROCEDURES COMPLETE]
+
+
+
+[ACTION_BEGIN]>> deploy : Abhimanyu : 2014-05-05T18:29:40.283773
+	SUBPROCESS>> Gathering alphainstaller settings.
+	SUBPROCESS>> Gathering information about app2 version 4.8.
+	SUBPROCESS>> Checking out data from repository.
+[LOCAL CHECKPOINT::1]>> Checked out repository
+	SUBPROCESS>> Building code base.
+[LOCAL CHECKPOINT::2]>> Codebase built
+	SUBPROCESS>> Compressing files for deployment.
+[LOCAL CHECKPOINT::3]>> Files compressed
+[LOCAL PROCEDURES COMPLETE]
+
+
+
+[ACTION_BEGIN]>> deploy : Abhimanyu : 2014-05-05T18:36:54.828533
+	SUBPROCESS>> Gathering alphainstaller settings.
+	SUBPROCESS>> Gathering information about app2 version 4.8.
+	SUBPROCESS>> Checking out data from repository.
+[LOCAL CHECKPOINT::1]>> Checked out repository
+	SUBPROCESS>> Building code base.
+[LOCAL CHECKPOINT::2]>> Codebase built
+	SUBPROCESS>> Compressing files for deployment.
+[LOCAL CHECKPOINT::3]>> Files compressed
+[LOCAL PROCEDURES COMPLETE]
+
+
+
+[ACTION_BEGIN]>> deploy : Abhimanyu : 2014-05-05T18:43:49.900119
+	SUBPROCESS>> Gathering alphainstaller settings.
+	SUBPROCESS>> Gathering information about app2 version 4.8.
+	SUBPROCESS>> Checking out data from repository.
+[LOCAL CHECKPOINT::1]>> Checked out repository
+	SUBPROCESS>> Building code base.
+[LOCAL CHECKPOINT::2]>> Codebase built
+	SUBPROCESS>> Compressing files for deployment.
+[LOCAL CHECKPOINT::3]>> Files compressed
+[LOCAL PROCEDURES COMPLETE]
+
+
+
+[ACTION_BEGIN]>> deploy : Abhimanyu : 2014-05-05T18:53:15.132897
+	SUBPROCESS>> Gathering alphainstaller settings.
+	SUBPROCESS>> Gathering information about app2 version 4.8.
+	SUBPROCESS>> Checking out data from repository.
+[LOCAL CHECKPOINT::1]>> Checked out repository
+	SUBPROCESS>> Building code base.
+[LOCAL CHECKPOINT::2]>> Codebase built
+	SUBPROCESS>> Compressing files for deployment.
+[LOCAL CHECKPOINT::3]>> Files compressed
+[LOCAL PROCEDURES COMPLETE]
+	SUBPROCESS>> Deploying app on server : 10.164.253.216
+	SUBPROCESS>> Setting up SSH connection with 10.164.253.216
+	SUBPROCESS>> Setting up SCP client.
+	SUBPROCESS>> Sending files.
+[REMOTE CHECKPOINT::10.164.253.216::1]>> Package successfully uploaded.
+	SUBPROCESS>> Extracting package
+[REMOTE CHECKPOINT::10.164.253.216::2]>> Package successfully extracted.
+	SUBPROCESS>> Removing old files.
+[REMOTE CHECKPOINT::10.164.253.216::3]>> Old app files removed.
+	SUBPROCESS>> Establishing links to install application.
+[REMOTE CHECKPOINT::10.164.253.216::4]>> Links successfully established.
+	SUBPROCESS>> Storing server state.
+[REMOTE CHECKPOINT::10.164.253.216::5]>> Server state recorded.
+[SERVER CHECKPOINT::10.164.253.216]
+[ACTION_COMPLETE]>> 2014-05-05T18:53:44.081596
+
+
+
+[ACTION_BEGIN]>> deploy : Abhimanyu : 2014-05-05T18:55:18.732180
+	SUBPROCESS>> Gathering alphainstaller settings.
+	SUBPROCESS>> Gathering information about app2 version 4.8.
+	SUBPROCESS>> Checking out data from repository.
+[LOCAL CHECKPOINT::1]>> Checked out repository
+	SUBPROCESS>> Building code base.
+[LOCAL CHECKPOINT::2]>> Codebase built
+	SUBPROCESS>> Compressing files for deployment.
+[LOCAL CHECKPOINT::3]>> Files compressed
+[LOCAL PROCEDURES COMPLETE]
+	SUBPROCESS>> Deploying app on server : 10.164.253.216
+	SUBPROCESS>> Setting up SSH connection with 10.164.253.216
+	SUBPROCESS>> Setting up SCP client.
+	SUBPROCESS>> Sending files.
+[REMOTE CHECKPOINT::10.164.253.216::1]>> Package successfully uploaded.
+	SUBPROCESS>> Extracting package
+[REMOTE CHECKPOINT::10.164.253.216::2]>> Package successfully extracted.
+	SUBPROCESS>> Removing old files.
+[REMOTE CHECKPOINT::10.164.253.216::3]>> Old app files removed.
+	SUBPROCESS>> Establishing links to install application.
+[REMOTE CHECKPOINT::10.164.253.216::4]>> Links successfully established.
+	SUBPROCESS>> Storing server state.
+[REMOTE CHECKPOINT::10.164.253.216::5]>> Server state recorded.
+[SERVER CHECKPOINT::10.164.253.216]
+[ACTION_COMPLETE]>> 2014-05-05T18:55:41.560140
+
+
+
+[ACTION_BEGIN]>> deploy : Abhimanyu : 2014-05-05T18:57:33.884575
+	SUBPROCESS>> Gathering alphainstaller settings.
+	SUBPROCESS>> Gathering information about app2 version 4.8.
+	SUBPROCESS>> Checking out data from repository.
+[LOCAL CHECKPOINT::1]>> Checked out repository
+	SUBPROCESS>> Building code base.
+[LOCAL CHECKPOINT::2]>> Codebase built
+	SUBPROCESS>> Compressing files for deployment.
+[LOCAL CHECKPOINT::3]>> Files compressed
+[LOCAL PROCEDURES COMPLETE]
+[ACTION_COMPLETE]>> 2014-05-05T18:57:35.626603
+
+
+
+[ACTION_BEGIN]>> deploy : Abhimanyu : 2014-05-05T19:20:30.253186
+	SUBPROCESS>> Gathering alphainstaller settings.
+	SUBPROCESS>> Gathering information about app2 version 4.8.
+	SUBPROCESS>> Checking out data from repository.
+[LOCAL CHECKPOINT::1]>> Checked out repository
+	SUBPROCESS>> Building code base.
+[LOCAL CHECKPOINT::2]>> Codebase built
+	SUBPROCESS>> Compressing files for deployment.
+[LOCAL CHECKPOINT::3]>> Files compressed
+[LOCAL PROCEDURES COMPLETE]
+	SUBPROCESS>> Deploying app on server : 10.164.253.216
+	SUBPROCESS>> Setting up SSH connection with 10.164.253.216
+	SUBPROCESS>> Setting up SCP client.
+	SUBPROCESS>> Sending files.
+[REMOTE CHECKPOINT::10.164.253.216::1]>> Package successfully uploaded.
+	SUBPROCESS>> Extracting package
+[REMOTE CHECKPOINT::10.164.253.216::2]>> Package successfully extracted.
+	SUBPROCESS>> Removing old files.
+[REMOTE CHECKPOINT::10.164.253.216::3]>> Old app files removed.
+	SUBPROCESS>> Establishing links to install application.
+[REMOTE CHECKPOINT::10.164.253.216::4]>> Links successfully established.
+	SUBPROCESS>> Storing server state.
+[REMOTE CHECKPOINT::10.164.253.216::5]>> Server state recorded.
+[SERVER CHECKPOINT::10.164.253.216]
+[ACTION_COMPLETE]>> 2014-05-05T19:20:38.418779

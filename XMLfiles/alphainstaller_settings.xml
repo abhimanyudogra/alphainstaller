@@ -8,4 +8,21 @@
   <file_compression>targz</file_compression>
   <UI_mode>shell</UI_mode>
   <temp_folder_location>/home/Abhimanyu/WS/alphainstaller/temp</temp_folder_location>  <!-- Location of folder where the codebase will be checked out, compressed and deleted after transmission-->
+  <defaults>
+    <deploy>
+      <continue_if_state_exists>y</continue_if_state_exists>
+      <convert_to_update_if_state_exists>y</convert_to_update_if_state_exists>
+    </deploy>
+    <update>
+      <force_if_state_not_found>n</force_if_state_not_found>
+      <local_diff_satisfaction>y</local_diff_satisfaction>
+      <remote_diff_satisfaction>y</remote_diff_satisfaction>
+    </update>
+    <common>
+      <resume_if_unsuccessful>n</resume_if_unsuccessful>
+      <enqueue_if_locked>y</enqueue_if_locked>
+      <enqueue_if_network_error>y</enqueue_if_network_error>
+      <enqueue_if_error>y</enqueue_if_error>
+    </common>    
+  </defaults>
 </configuration>

@@ -143,12 +143,12 @@ class AlphainstallerXMLParser(XMLParser):
 
         return alphainstaller_xml_data
     
-    def get_values(self, keys):
-        alphainstaller_xml_data = {}
+    def get_default(self, key):
         tree = ET.parse(self.location)
         root = tree.getroot()
         for data in root:
-            if data.tag in keys:
-                alphainstaller_xml_data[data.tag] = data.text
-                
-        return alphainstaller_xml_data
+            if data.tag == "defaults":
+                for category in data:
+                    for flag in category:
+                        if flag.tag == key:
+                            return flag.text

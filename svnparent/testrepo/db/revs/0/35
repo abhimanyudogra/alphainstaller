@@ -1,0 +1,62 @@
+id: 0-1.0-35.r35/0
+type: dir
+pred: 0-1.0-30.r34/1043
+count: 23
+text: 34 741 289 289 c61d294138d7e019263c256504082b17
+cpath: /tags/v4.8
+copyfrom: 34 /tags/v4.7
+
+PLAIN
+K 9
+app2_v4.5
+V 16
+dir 0-1.0-8.r8/0
+K 4
+v4.5
+V 20
+dir 0-1.0-12.r27/383
+K 4
+v4.7
+V 21
+dir 0-1.0-30.r34/1043
+K 4
+v4.8
+V 18
+dir 0-1.0-35.r35/0
+END
+ENDREP
+id: 3-1.0.r35/317
+type: dir
+pred: 3-1.0.r34/1330
+count: 25
+text: 35 160 144 144 142bf494f3c6b9a4b46dde2bc91bdcc3
+cpath: /tags
+copyroot: 0 /
+
+PLAIN
+K 8
+branches
+V 17
+dir 2-1.0.r11/278
+K 4
+tags
+V 17
+dir 3-1.0.r35/317
+K 5
+trunk
+V 16
+dir 0-1.0.r5/560
+END
+ENDREP
+id: 0.0.r35/575
+type: dir
+pred: 0.0.r34/1591
+count: 35
+text: 35 458 104 104 669b152841f4a915f786ecb7fb2e69cc
+cpath: /
+copyroot: 0 /
+
+0-1._0.t34-y add-dir false false /tags/v4.8
+34 /tags/v4.7
+
+575 708
