@@ -68,7 +68,7 @@ class TgtXMLParserFactory():
 
 def get_binary_paths(location, version):
     '''
-    Interacts with factory, retrieves and returns data.
+    Interacts with binary xml factory class and returns the data parsed out of bin xml.
     '''
     parser_obj = BinXMLParserFactory(location, version)
     return parser_obj.parse()
@@ -76,7 +76,7 @@ def get_binary_paths(location, version):
 
 def get_config_file_paths(location, version):
     '''
-    Interacts with factory, retieves and returns data.
+    Interacts with Config xml factory class and returns the data parsed out of config xml.
     '''
     parser_obj = CfgXMLParserFactory(location, version)
     return parser_obj.parse()
@@ -84,14 +84,14 @@ def get_config_file_paths(location, version):
 
 def get_scr_paths(location, version):
     '''
-    Interacts with factory, retrieves and returns data.
+    Interacts with script xml factory class and returns the data parsed out of script xml.
     '''
     parser_obj = ScrXMLParserFactory(location, version)
     return parser_obj.parse()
 
 def get_default(key):
     '''
-    Gets default value from AlphaInstaller's settings XML.
+    Returns the corresponding value for a sepcific default flag matching the key parameter
     '''
     settings_obj = ParserDepot.AlphainstallerXMLParser(PATH_SETTINGS_XML)
     return settings_obj.get_default(key)

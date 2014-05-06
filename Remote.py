@@ -18,8 +18,7 @@ PATH_SETTINGS_XML = "XMLfiles/alphainstaller_settings.xml"
 
 class RemoteOperator(object):
     '''
-    Factory module that selects relevant remote target machine based on the preferences mentioned in settings XML.
-    Containts a deploy wrapper module, which calls the respective deploy method for every target machine the app
+    Factory module that contains a deploy wrapper, which calls the respective deploy method for every target machine that the app
      is being deployed on.
     '''
     def __init__(self, session, parent_xml_data):
@@ -54,6 +53,18 @@ class RemoteOperator(object):
         return _queue
     
     def check_state(self, ip_address):
+        '''
+        Checks whether the app being deployed is already recorded (has a state file) by the AlphaInstaller.
+        Depending on the current action, deploy or update, this module notifies the user and returns
+        True if the actions must be continue on the server, otherwise False.
+        
+        If a state file exists and the current session's action is to deploy, the module provides
+        the user to switch the action to update to allow the user access to update specific features.
+        
+        In case the state file for the app on that specific server does not exist, AlphaInstaller
+        provides the user an option to switc the action to deploy if it is currently update, or to
+        skip the operations on that server, as update features can not be accessed without the state file.
+        '''
         state_file_path = os.path.join(os.path.join("States", ip_address), self.session["app_name"])
         if self.session["action"] == "deploy":
             if os.path.exists(state_file_path):
@@ -74,28 +85,39 @@ class RemoteOperator(object):
         elif self.session["action"] == "update":
             if not os.path.exists(state_file_path):
                 question = "The state file of %s for server %s was not found. Which implies that the "\
-                "alphainstaller doesn't remember the app previously being deployed on that server.\n This "\
-                "will some features to not be available, like local and remote diffs.\n Do you wish to continue? "\
+                "alphainstaller doesn't remember the app previously being deployed on that server.\nThis "\
+                "will some features to not be available, like local and remote diffs.\nDo you wish to continue? "\
                 "Answering 'n' will cause alphainstaller to drop operations on this server." % (self.session["app_name"], ip_address)
                 if utilities.yes_or_no(question, XMLInfoExtracter.get_default("force_if_state_not_found"), self.session["silent"]):
                     self.session["action"] = "deploy"
                     return True
                 else:
                     return False
+            else:
+                return True
      
-    def display_local_diff(self, ip_address):    
+    def display_local_diff(self, ip_address):  
+        '''
+        Presents user with a diff between the files being deployed and the 
+        files already there, all belonging to the specific app being deployed.
+        '''  
         diff_obj = StateLogger.LocalStateCheck(self.session, ip_address)
         diff_obj.local_diff()      
 
     def install(self, log_obj, server_resume_data):
         '''
-        Calls the deploy method for every target machine.
+        Calls the deploy method for every target machine. Maintains as server queue and continues
+        performing operations until the queue is empty.
+        
+        During every iteration, a server is popped from the queue. State files for that server are
+        then verified. The app is the "locked" by using the Locking module from utilities, to 
+        make sure that no other AlphaInstaller instance modifies the files simultaneously and 
+        cause corruption.
         '''
         _queue = self.build_server_queue(server_resume_data)
         state_obj = StateLogger.LocalStateManager(self.session, self.parent_xml_data)
         state_obj.create_statefile()
         action_backup = self.session["action"]
-        
         while _queue:
             green_light = True
             self.session["action"] = action_backup
@@ -106,7 +128,8 @@ class RemoteOperator(object):
             if self.check_state(server["ip_address"]):                
                 if self.session["action"] == "update":
                     self.display_local_diff(server["ip_address"])
-                    question = "Are you satisfied with the diff? Selecting 'n' will make AlphaInstaller skip the procedures for the current server."
+                    question = "Are you satisfied with the diff? Selecting 'n' "\
+                    "will make AlphaInstaller skip the procedures for the current server."
                     if not utilities.yes_or_no(question, XMLInfoExtracter.get_default("local_diff_satisfaction"), self.session["silent"]):
                         green_light = False
                         
@@ -133,6 +156,9 @@ class RemoteOperator(object):
                                     _queue.append((server, log_obj.checkpoint_id))
                                     log_obj.reset_cp()
                                     continue
+                            except KeyboardInterrupt:
+                                lock_obj.unlock()
+                                raise KeyboardInterrupt
                             except:
                                 lock_obj.unlock()
                                 question = "An error halted the operations on server %s .Do you wish to add this server to the back of"\
@@ -212,18 +238,30 @@ class SCP_paramiko(object):
         self.display_activity(stdout, stderr)
         
     def store_state(self, ssh):
+        '''
+        After execution of the operations, this function modifies the server's statefile and
+        stores a file : hash-value snapshot of every file in prod folder.
+        '''
         stdin, stdout, stderr = ssh.exec_command("find %s -type l -print0 | sort -z | xargs -0 sha1sum" % self.server_data["prod_folder_location"])
         type(stdin)
         r_diff_obj = StateLogger.RemoteStateManager(self.server_data["ip_address"], self.server_data["prod_folder_location"])
         r_diff_obj.update_server_state(stdout)
         
     def check_state(self, ssh):
+        '''
+        Producesa diff between current server prod folder state and last recorded snapshot
+        to detect changes that weren't made via AlphaInstaller.
+        '''
         stdin, stdout, stderr = ssh.exec_command("find %s -type l -print0 | sort -z | xargs -0 sha1sum" % self.server_data["prod_folder_location"])
         type(stdin)
         r_diff_obj = StateLogger.RemoteStateCheck(self.server_data["ip_address"], self.server_data["prod_folder_location"])
         return r_diff_obj.remote_diff(stdout)
     
     def cleaner(self, ssh):
+        '''
+        This function gets rid of files (links) that belong to the previously deployed
+        app on the server.
+        '''
         old_state_location = os.path.join(os.path.join("States",self.server_data["ip_address"]), self.session["app_name"])
         old_state = open(old_state_location, "r")
         hash_re = re.compile(" : ")
@@ -249,7 +287,9 @@ class SCP_paramiko(object):
 
     def deploy(self, log_obj, start_from_cp):
         '''
-        Driver module. Calls all sub-modules to transmit package, extract it and establish final connections.
+        This is the driver module that performs all steps to deploy the application on the server.
+        It forms a connection, transmits the package, extracts the contents and forms links.
+        In case of update, the old files belonging to the previously deployed app are removed.
         '''
         ip_address = self.server_data["ip_address"]
         log_obj.add_log("Setting up SSH connection with %s" % self.server_data["ip_address"])
@@ -282,6 +322,9 @@ class SCP_paramiko(object):
             else:
                 log_obj.skip_checkpoint()
             
+            '''
+            The following code is specifically executed for "update" processes
+            '''
             if self.session["action"] == "update": 
                 if (start_from_cp <= log_obj.checkpoint_id):
                     log_obj.add_log("Removing old files.")
@@ -289,6 +332,9 @@ class SCP_paramiko(object):
                     log_obj.mark_remote_checkpoint("Old app files removed.", ip_address)
                 else:
                     log_obj.skip_checkpoint()
+            '''
+            /update
+            '''
 
             if (start_from_cp <= log_obj.checkpoint_id):
                 log_obj.add_log("Establishing links to install application.")

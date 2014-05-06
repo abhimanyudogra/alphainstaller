@@ -6,9 +6,6 @@ Created on 11-Mar-2014
 
 import os
 from shutil import rmtree
-import sys
-from time import sleep
-
 
 import XMLInfoExtracter
 import RepositoryInteraction

@@ -46,7 +46,7 @@ class Logger():
         Marks a local checkpoint in the log.
         '''
         self.checkpoint_id += 1
-        print "[MARKING LOCAL CHECKPOINT %d]" % self.checkpoint_id
+        print "\nMarking local checkpoint %d ...\n" % self.checkpoint_id
         self.file_obj.write("[LOCAL CHECKPOINT::%d]>> %s\n" % (self.checkpoint_id, desc))
 
     def mark_server_checkpoint(self, ip):
@@ -62,7 +62,7 @@ class Logger():
         Marks a remote checkpoint in the log.
         '''
         self.checkpoint_id += 1
-        print "[MARKING REMOTE CHECKPOINT %d]" % self.checkpoint_id
+        print "\nMarking remote checkpoint %s for server %s ...\n" % (self.checkpoint_id, ip)
         self.file_obj.write("[REMOTE CHECKPOINT::%s::%d]>> %s\n" % (ip, self.checkpoint_id, desc))
         
         
@@ -72,7 +72,7 @@ class Logger():
          probably due to abrupt termination of the action.
         '''
         self.checkpoint_id += 1
-        print "[SKIPPING CHECKPOINT %d]" % self.checkpoint_id
+        print "\nSkipping checkpoint %d...\n" % self.checkpoint_id
         self.file_obj.write("[SKIP CHECKPOINT::%d]\n" % self.checkpoint_id)
         
 
