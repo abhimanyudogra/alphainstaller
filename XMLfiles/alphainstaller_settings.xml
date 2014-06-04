@@ -1,13 +1,13 @@
 <configuration>
-  <parent_xml_location>XMLfiles/parent_app_data.xml</parent_xml_location> 
-  <parent_xml_version>0.0</parent_xml_version>
   <builder_file_location>Makefile</builder_file_location>  <!-- Stores the location of the file that must be summoned to build the codebase -->
   <builder_type>make</builder_type>
   <repo_location>/home/Abhimanyu/WS/alphainstaller/svnparent/testrepo/tags/</repo_location>
   <repo_type>svn</repo_type>
   <file_compression>targz</file_compression>
   <UI_mode>shell</UI_mode>
+  <database_location>alphagit/alphadata</database_location>
   <temp_folder_location>/home/Abhimanyu/WS/alphainstaller/temp</temp_folder_location>  <!-- Location of folder where the codebase will be checked out, compressed and deleted after transmission-->
+  <default_parent_xml>xml</default_parent_xml>
   <defaults>
     <deploy>
       <continue_if_state_exists>y</continue_if_state_exists>

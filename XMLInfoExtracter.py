@@ -12,11 +12,11 @@ class ParentXMLParserFactory():
     '''
     Factory module for Parent XML Parsers.
     '''
-    def __init__(self, location, version):
-        self.parser_obj = getattr(ParserDepot, "ParentXMLParser_v_%s" % "_".join(version.split(".")))(location)
+    def __init__(self, location):
+        self.parser_obj = ParserDepot.ParentXMLParser(location)
 
-    def parse(self, session):
-        return self.parser_obj.parse(session)
+    def parse(self):
+        return self.parser_obj.parse()
 
     def get_tag(self, tag):
         return self.parser_obj.get_tag(self, tag)

@@ -8,6 +8,8 @@ import os
 import re
 import XMLInfoExtracter
 
+SERVER_DB = os.path.join("alphagit", os.path.join("alphadata", "server data"))
+
 class LocalStateManager():
     '''
     Encapsulates modules that create and store state file containing filename - hash pairs for all 
@@ -58,12 +60,12 @@ class LocalStateManager():
         temporary state-file (generated an the beginning of the operations on the server) permanent
         by storing it in the 'States' folder under the target machine's address.
         '''
-        final_state_dir = os.path.join("States", ip_address)
+        final_state_dir = os.path.join(SERVER_DB, os.path.join(ip_address, os.path.join(self.session["app_name"], "v%0.1f" % self.session["version"])))
         
         if not os.path.exists(final_state_dir):
             os.makedirs(final_state_dir)
         
-        final_state_file = os.path.join(final_state_dir, self.session["app_name"])        
+        final_state_file = os.path.join(final_state_dir, "app state")
         src = open(self.temp_state_file, "r")
         des = open(final_state_file, "w")
         des.write(src.read())        
@@ -80,10 +82,10 @@ class RemoteStateManager():
         self.prod_folder_location = prod_folder_location
                 
     def update_server_state(self, hashes):
-        state_file = os.path.join("States", os.path.join(self.ip_address, "server-state"))
-        if not os.path.exists(os.path.dirname(state_file)):
-            os.makedirs(os.path.dirname(state_file))            
-        state_f = open(state_file, "w")                
+        state_location = os.path.join(SERVER_DB, self.ip_address)
+        if not os.path.exists(state_location):
+            os.makedirs(state_location)            
+        state_f = open(os.path.join(state_location, "server state"), "w")                
         for line in hashes:
             line_data = line.split("  ")
             result = "%s : %s\n" % (os.path.relpath(line_data[1], self.prod_folder_location)[:-1], line_data[0])
@@ -174,7 +176,7 @@ class LocalStateCheck(StateCheck):
             if diff[_type]:
                 for _file in diff[_type]:
                     print _type, _file
-            if diff[_type]:
+            if diff[_type] and types.index(_type) != len(types)-1:
                 print "---------------------------------------------------------------------"
         print "#########################################################################\n"
 
@@ -183,8 +185,16 @@ class LocalStateCheck(StateCheck):
         Performs diff between the old statefile and the new statefile of the app's versions
         on the server.
         '''
+        prev_ver_path = os.path.join(SERVER_DB, os.path.join(self.ip_address, os.path.join(self.session["app_name"], "version history")))
+        previous_version = "0.0"
+        if os.path.exists(prev_ver_path):            
+            f = open(prev_ver_path, "r")
+            previous_version = f.readlines()[-1].strip('\n')
+            f.close()
+            
         new_statefile = os.path.join(self.session["temp_folder_location"], "statefile.txt")
-        old_statefile = os.path.join(os.path.join("States", self.ip_address), self.session["app_name"])
+        old_statefile = os.path.join(os.path.join(SERVER_DB, os.path.join(self.ip_address, os.path.join(self.session["app_name"], 
+                                                                                                        os.path.join("v" + previous_version, "app state")))))
         new_hashes = self.get_hashes(new_statefile)
         old_hashes = self.get_hashes(old_statefile)
         diff = self.generate_diff(old_hashes, new_hashes)        
@@ -228,7 +238,7 @@ class RemoteStateCheck(StateCheck):
                 for _file in diff[_type]:
                     print _type, _file
                 changes_found = True
-            if diff[_type]:
+            if diff[_type] and types.index(_type) != len(types)-1:
                 print "---------------------------------------------------------------------"
         if not changes_found:
             print "No changes found."
@@ -240,7 +250,7 @@ class RemoteStateCheck(StateCheck):
         Utilizes the class modules to perform diff between the old and current server states to detect 
         changes that weren't made via AlphaInstaller.
         '''
-        old_server_state = os.path.join("States", os.path.join(self.ip_address, "server-state"))
+        old_server_state = os.path.join(SERVER_DB, os.path.join(self.ip_address, "server state"))
         if not os.path.exists(old_server_state):
             print "Server state-file not found. Remote diff could not be generated."
             return False

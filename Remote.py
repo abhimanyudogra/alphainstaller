@@ -13,7 +13,10 @@ import socket
 import XMLInfoExtracter
 import StateLogger
 import utilities
+
 PATH_SETTINGS_XML = "XMLfiles/alphainstaller_settings.xml"
+
+SERVER_DB = os.path.join("alphagit", os.path.join("alphadata", "server data"))
 
 
 class RemoteOperator(object):
@@ -65,7 +68,7 @@ class RemoteOperator(object):
         provides the user an option to switc the action to deploy if it is currently update, or to
         skip the operations on that server, as update features can not be accessed without the state file.
         '''
-        state_file_path = os.path.join(os.path.join("States", ip_address), self.session["app_name"])
+        state_file_path = os.path.join(SERVER_DB, os.path.join(ip_address, os.path.join(self.session["app_name"], os.path.join("v%0.1f" % self.session["version"], "app state"))))
         if self.session["action"] == "deploy":
             if os.path.exists(state_file_path):
                 question = "A statefile of app %s on server %s was found, implying the app has already "\
@@ -102,7 +105,30 @@ class RemoteOperator(object):
         files already there, all belonging to the specific app being deployed.
         '''  
         diff_obj = StateLogger.LocalStateCheck(self.session, ip_address)
-        diff_obj.local_diff()      
+        diff_obj.local_diff()   
+        
+    def store_xmls(self, ip):
+        location = os.path.join(SERVER_DB, os.path.join(ip, os.path.join(self.session["app_name"], os.path.join("v%0.1f" % self.session["version"], "config xmls"))))
+        
+        if not os.path.exists(location):
+            os.makedirs(location)
+        
+        for i in ["bin", "scr", "tgt", "cfg"]:
+            source_f = open(os.path.join(self.parent_xml_data["%s_xml_location" % i]), "r")
+            dest_f = open(os.path.join(location, "%s.xml" % i), "w")
+            dest_f.write(source_f.read())
+            source_f.close()
+            dest_f.close()
+            
+    def mark_current_version(self, ip):
+        location = os.path.join(SERVER_DB, os.path.join(ip, os.path.join(self.session["app_name"], "version history")))
+        f = open(location, "a")        
+        f.write("%0.1f\n" % self.session["version"])
+        f.close()        
+        
+    def update_database(self, ip):
+        self.store_xmls(ip)
+        self.mark_current_version(ip)
 
     def install(self, log_obj, server_resume_data):
         '''
@@ -141,7 +167,8 @@ class RemoteOperator(object):
                         if utilities.yes_or_no(question, XMLInfoExtracter.get_default("enqueue_if_locked"), self.session["silent"]):
                             _queue.append(server_and_checkpoint)
                     else:           
-                        log_obj.add_log("Deploying app on server : %s" % server["ip_address"])
+                        log_obj.add_main_log("Deploying app on server : %s" % server["ip_address"])
+                        log_obj.mark_server_begin(server["ip_address"])
                         lock_obj.create_lock()
                         if server["transmission_method"] == "SCP_paramiko":
                             try:
@@ -159,16 +186,17 @@ class RemoteOperator(object):
                             except KeyboardInterrupt:
                                 lock_obj.unlock()
                                 raise KeyboardInterrupt
-                            except:
+                            '''except:
                                 lock_obj.unlock()
-                                question = "An error halted the operations on server %s .Do you wish to add this server to the back of"\
+                                question = "An error halted the operations on server %s .Do you wish to add this server to the back of "\
                                 "queue for future consideration? Otherwise the server will be dropped."
                                 if utilities.yes_or_no(question, XMLInfoExtracter.get_default("enqueue_if_error"), self.session["silent"]):
                                     _queue.append((server, log_obj.checkpoint_id))
                                     log_obj.reset_cp()
-                                    continue
+                                    continue'''
                         state_obj.store_statefile(server["ip_address"])
-                        log_obj.mark_server_checkpoint(server["ip_address"])
+                        log_obj.mark_server_end(server["ip_address"])
+                        self.update_database(server["ip_address"])
                         lock_obj.unlock()      
 
 
@@ -262,7 +290,14 @@ class SCP_paramiko(object):
         This function gets rid of files (links) that belong to the previously deployed
         app on the server.
         '''
-        old_state_location = os.path.join(os.path.join("States",self.server_data["ip_address"]), self.session["app_name"])
+        prev_ver_path = os.path.join(SERVER_DB, os.path.join(self.server_data["ip_address"], os.path.join(self.session["app_name"], "version history")))
+        previous_version = "0.0"
+        if os.path.exists(prev_ver_path):            
+            f = open(prev_ver_path, "r")
+            previous_version = f.readlines()[-1].strip('\n')
+            f.close()
+
+        old_state_location = os.path.join(SERVER_DB , os.path.join(self.server_data["ip_address"], os.path.join(self.session["app_name"], os.path.join('v' + previous_version, "app state"))))
         old_state = open(old_state_location, "r")
         hash_re = re.compile(" : ")
         for line in old_state:
@@ -292,10 +327,10 @@ class SCP_paramiko(object):
         In case of update, the old files belonging to the previously deployed app are removed.
         '''
         ip_address = self.server_data["ip_address"]
-        log_obj.add_log("Setting up SSH connection with %s" % self.server_data["ip_address"])
+        log_obj.add_remote_log("Setting up SSH connection with %s" % self.server_data["ip_address"])
         ssh = self.SSH_connector()
 
-        log_obj.add_log("Setting up SCP client.")
+        log_obj.add_remote_log("Setting up SCP client.")
         scp_obj = scp.SCPClient(ssh.get_transport())
         
         green_light = True
@@ -308,17 +343,17 @@ class SCP_paramiko(object):
 
         if green_light:   
             if (start_from_cp <= log_obj.checkpoint_id):
-                log_obj.add_log("Sending files.")
+                log_obj.add_remote_log("Sending files.")
                 scp_obj.put(os.path.join(self.session["temp_folder_location"], "alphainstaller.tar.gz"),
                             self.server_data["release_folder_location"])
-                log_obj.mark_remote_checkpoint("Package successfully uploaded.", ip_address)
+                log_obj.mark_remote_checkpoint("Package successfully uploaded.")
             else:
                 log_obj.skip_checkpoint()
 
             if (start_from_cp <= log_obj.checkpoint_id):
-                log_obj.add_log("Extracting package")
+                log_obj.add_remote_log("Extracting package")
                 self.extracter(ssh)
-                log_obj.mark_remote_checkpoint("Package successfully extracted.", ip_address)
+                log_obj.mark_remote_checkpoint("Package successfully extracted.")
             else:
                 log_obj.skip_checkpoint()
             
@@ -327,9 +362,9 @@ class SCP_paramiko(object):
             '''
             if self.session["action"] == "update": 
                 if (start_from_cp <= log_obj.checkpoint_id):
-                    log_obj.add_log("Removing old files.")
+                    log_obj.add_remote_log("Removing old files.")
                     self.cleaner(ssh)
-                    log_obj.mark_remote_checkpoint("Old app files removed.", ip_address)
+                    log_obj.mark_remote_checkpoint("Old app files removed.")
                 else:
                     log_obj.skip_checkpoint()
             '''
@@ -337,16 +372,16 @@ class SCP_paramiko(object):
             '''
 
             if (start_from_cp <= log_obj.checkpoint_id):
-                log_obj.add_log("Establishing links to install application.")
+                log_obj.add_remote_log("Establishing links to install application.")
                 self.linker(ssh)
-                log_obj.mark_remote_checkpoint("Links successfully established.", ip_address)
+                log_obj.mark_remote_checkpoint("Links successfully established.")
             else:
                 log_obj.skip_checkpoint()
 
             if (start_from_cp <= log_obj.checkpoint_id):
-                log_obj.add_log("Storing server state.")
+                log_obj.add_remote_log("Storing server state.")
                 self.store_state(ssh)
-                log_obj.mark_remote_checkpoint("Server state recorded.", ip_address)
+                log_obj.mark_remote_checkpoint("Server state recorded.")
             else:
                 log_obj.skip_checkpoint()
 

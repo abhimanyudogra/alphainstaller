@@ -35,12 +35,15 @@ def authorize():
 arguments = argparse.ArgumentParser(description="An application deployment system.")
 arguments.add_argument("action", help="deploy/update/rollback")
 arguments.add_argument("app_name", help="Name of the app to be deployed.")
-arguments.add_argument("version", help="Version tag of the codebase from where the app is to be checked out.")
+arguments.add_argument("-v", "--version", default=-1, help="Version tag of the codebase from where the app is to be checked out.")
 arguments.add_argument("-s", "--silent", action="store_true", 
                        help="Turns silent mode on. After authorization, AlphaInstaller works without any interruption."\
                         "All questions that are otherwise asked are now automatically answered using the default responses "\
                         "stored in the settings XML.")
 arguments.add_argument("-t", "--time", default="0", help="")
+arguments.add_argument("-c", "--compile", action="store_true")
+arguments.add_argument("-u", "--upgrade", action="store_true")
+arguments.add_argument("-x", "--xml", default=False)
 args = arguments.parse_args()
 
 try: 
@@ -48,23 +51,33 @@ try:
 except AssertionError:
     print "%s is not a recognized command. Please refer the documentation by using the '--help' argument." % args.action
     sys.exit()
+    
 try:
     float(args.time)
 except ValueError:
     print "%s is not a valid number. For documentation, use '--help' argument." % args.time
     sys.exit()
     
+if args.action in {"deploy", "update"}:
+    try:
+        assert args.xml
+    except AssertionError:
+        print "Please specify the location of parent xml"
+        sys.exit()
+    
 print "Initiating %s procedure..." % (args.action.upper())
 
-session = {"app_name" : args.app_name, "version" : args.version, "action" : args.action, "silent" : args.silent, "time" : args.time}
+session = {"app_name" : args.app_name, "version" : args.version, "action" : args.action, "silent" : args.silent, "time" : args.time, 
+           "compile" : args.compile, "upgrade_version" : args.upgrade, "parent_xml_location" : args.xml}
 s = sched.scheduler(time.time, time.sleep)
 
 '''
 Calling module based on the action provided as command line argument.
 '''
 try:
-    session["username"] = authorize()
-    if args.action == "deploy" or args.action == "update":
+    '''session["username"] = authorize()'''
+    session["username"] = "Abhimanyu"
+    if args.action in {"deploy", "update"}:
         s.enter(float(args.time)*1, 1, Install.ignite, (session,))
         s.run()
     elif args.action == "rollback":

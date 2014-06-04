@@ -21,24 +21,20 @@ class XMLParser():
         pass
 
 
-class ParentXMLParser_v_0_0(XMLParser):
+class ParentXMLParser(XMLParser):
     '''
     Parsing module for v0.0 of Parent XML
     '''
     def __init__(self, location):
         XMLParser.__init__(self, location)
 
-    def parse(self, session):
+    def parse(self):
         parent_xml_data = {}
         tree = ET.parse(self.location)
         root = tree.getroot()
 
-        for app in root:
-            if app.attrib["name"] == session["app_name"]:
-                for app_version in app:     # Checking the "version" node for the required version
-                    if app_version.attrib["tag"] == session["version"]:
-                        for info in app_version:  # Extracting all information about the relevant version of the app
-                            parent_xml_data[info.tag] = info.text
+        for info in root:  # Extracting all information about the relevant version of the app
+            parent_xml_data[info.tag] = info.text
 
         return parent_xml_data
 

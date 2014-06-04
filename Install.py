@@ -18,6 +18,20 @@ import utilities
 PATH_SETTINGS_XML = "XMLfiles/alphainstaller_settings.xml"
 
 
+def get_version(app_name, u_flag,  database_location):
+    _path = os.path.join(database_location, "app data")
+    latest_version = 0.0
+    for app in os.listdir(_path):
+        if app == app_name:
+            for version in os.listdir(os.path.join(_path, app_name)):
+                latest_version = max(float(latest_version), float(version.strip('v')))
+    
+    if u_flag:
+        return (latest_version + 0.1)
+    else:
+        return latest_version
+    
+
 def check_log(session):
     '''
     Checks the log file for the app + version for abrupt termination of last action.
@@ -39,12 +53,12 @@ def gather_settings():
     return settings_obj.parse()
 
 
-def gather_app_data(session, location, xml_version):
+def gather_app_data(location):
     '''
     Parses parent XML to obtain addresses to the rest of the XML's for the specific app + version.
     '''
-    parent_xml_obj = XMLInfoExtracter.ParentXMLParserFactory(location, xml_version)
-    return parent_xml_obj.parse(session)
+    parent_xml_obj = XMLInfoExtracter.ParentXMLParserFactory(location)
+    return parent_xml_obj.parse()
 
 
 def checkout(code_base_version, repo_type, repo_location, target):
@@ -96,39 +110,42 @@ def ignite(session):
     '''
     The driver module for deploy. Calls respective modules for the entire deployment process.
     '''
-
+    
+    print "Gathering alphainstaller settings."
+    settings = gather_settings()
+    
+    if session["version"] == -1:
+        session["version"] = get_version(session["app_name"], session["upgrade_version"], settings["database_location"])
+    
     log_obj = LogManager.Logger(session)
     
     local_resume_cp, server_resume_data = check_log(session)
-
-    log_obj.add_log("Gathering alphainstaller settings.")
-    settings = gather_settings()
     
     session["temp_folder_location"] = os.path.join(settings["temp_folder_location"], session["username"])
 
-    log_obj.add_log("Gathering information about %s version %s." % (session["app_name"], session["version"]))
-    parent_xml_data = gather_app_data(session, settings["parent_xml_location"], settings["parent_xml_version"])
+    log_obj.add_main_log("Gathering information about %s version %s." % (session["app_name"], session["version"]))
+    parent_xml_data = gather_app_data(session["parent_xml_location"])
 
-    if local_resume_cp <= log_obj.checkpoint_id:
-        log_obj.add_log("Checking out data from repository.")
+    if local_resume_cp <= log_obj.checkpoint_id and session["compile"]:
+        log_obj.add_main_log("Checking out data from repository.")
         checkout(session["version"], settings["repo_type"], settings["repo_location"], session["temp_folder_location"])
         log_obj.mark_local_checkpoint("Checked out repository")
     else:
-        log_obj.skip_checkpoint()
+        log_obj.skip_main_checkpoint()
 
-    if local_resume_cp <= log_obj.checkpoint_id:
-        log_obj.add_log("Building code base.")
+    if local_resume_cp <= log_obj.checkpoint_id and session["compile"]:
+        log_obj.add_main_log("Building code base.")
         builder(session["temp_folder_location"], settings["builder_file_location"], settings["builder_type"])
         log_obj.mark_local_checkpoint("Codebase built")
     else:
-        log_obj.skip_checkpoint()
+        log_obj.skip_main_checkpoint()
 
     if local_resume_cp <= log_obj.checkpoint_id:
-        log_obj.add_log("Compressing files for deployment.")
+        log_obj.add_main_log("Compressing files for deployment.")
         compresser(session["temp_folder_location"], settings["file_compression"], parent_xml_data)
         log_obj.mark_local_checkpoint("Files compressed")
     else:
-        log_obj.skip_checkpoint()
+        log_obj.skip_main_checkpoint()
 
     log_obj.mark_local_complete()
     remote_installer(session, log_obj, parent_xml_data, server_resume_data)

@@ -1,0 +1,11 @@
+<target_machines>
+  <target_machine>
+    <os_type>Linux</os_type>
+    <transmission_method>SCP_paramiko</transmission_method>
+    <ssh_username>Abhimanyu</ssh_username>
+    <ssh_password>alphascript</ssh_password>    
+    <ip_address>10.164.253.216</ip_address>
+    <release_folder_location>/home/Abhimanyu/Release/app2/v4.5/</release_folder_location>
+    <prod_folder_location>/home/Abhimanyu/infra/Prod</prod_folder_location>
+  </target_machine>
+</target_machines>

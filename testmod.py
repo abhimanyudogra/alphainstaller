@@ -4,12 +4,21 @@ Created on 18-Feb-2014
 @author: Abhimanyu
 '''
 
-import xml.etree.ElementTree as ET
+from datetime import datetime
+from apscheduler.scheduler import Scheduler
 
-alphainstaller_xml_data = {}
-tree = ET.parse("XMLfiles/alphainstaller_settings.xml")
-root = tree.getroot()
-for data in root:
-    alphainstaller_xml_data[data.tag] = data.text
+# Start the scheduler
+sched = Scheduler(standalone=True)
 
-print alphainstaller_xml_data
+
+# Define the function that is to be executed
+def my_job(text):
+    
+    print text
+
+# The job will be executed on November 6th, 2009
+exec_date = datetime.strptime("2014-05-06 18:17:00", "%Y-%m-%d %H:%M:%S")
+
+# Store the job in a variable in case we want to cancel it
+job = sched.add_date_job(my_job, exec_date, ['sdasda'])
+sched.start()
